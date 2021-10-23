@@ -1,0 +1,48 @@
+{
+	"FileVersion": 3,
+	"Version": 5,
+	"VersionName": "1.0",
+	"FriendlyName": "Extended Logs",
+	"Description": "",
+	"Category": "Code Plugin",
+	"CreatedBy": "Alexander Shumeyko",
+	"CreatedByURL": "https://www.linkedin.com/in/forrgit/",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "https://t.me/Forrgit",
+	"EngineVersion": "4.26.0",
+	"EnabledByDefault": true,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "ExtendedLogs",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"Linux",
+				"Mac",
+				"PS4",
+				"XboxOne",
+				"Switch",
+				"IOS",
+				"Android"
+			]
+		},
+		{
+			"Name": "ExtendedLogsEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"Linux",
+				"Mac"
+			]
+		}
+	]
+}
