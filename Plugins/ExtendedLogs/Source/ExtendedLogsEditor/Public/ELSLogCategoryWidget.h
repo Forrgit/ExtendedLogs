@@ -12,7 +12,7 @@ class SELLogCategoryWidget : public SCompoundWidget
 	using ListItemPtr = TSharedPtr<FString>;
 	//using ListViewType = SListView<ListItemPtrType>;
 
-	DECLARE_DELEGATE_OneParam(FOnSelectionChangedDelegate, FName/*ItemValue*/);
+	DECLARE_DELEGATE_OneParam(FOnSelectionChangedDelegate, FString/*ItemValue*/);
 
 public:
 	SLATE_BEGIN_ARGS( SELLogCategoryWidget )
@@ -33,6 +33,7 @@ public:
 	void Construct(const FArguments& InArgs);
 
 private:
+	FText GetCurrentSelection() const;
 	TSharedRef<SWidget> OnGenerateWidgetForList(ListItemPtr InItem) const;
 	void OnListSelectionChanged(ListItemPtr InItem, ESelectInfo::Type InSelectInfo);
 	
@@ -41,6 +42,5 @@ private:
 
 	TSharedPtr<SSearchableComboBox> SearchableComboBox;  
 	TArray<ListItemPtr> ListOptionsSource;
-	
 };
 

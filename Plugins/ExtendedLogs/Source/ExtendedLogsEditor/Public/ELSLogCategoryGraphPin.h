@@ -16,6 +16,6 @@ public:
 	//~ End SGraphPin Interface
 
 private:
-	void OnSelectionChanged(FName InItem);
+	void OnSelectionChanged(FString InItem);
 };
 

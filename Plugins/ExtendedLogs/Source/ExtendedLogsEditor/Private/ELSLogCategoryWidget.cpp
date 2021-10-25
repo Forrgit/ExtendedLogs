@@ -29,7 +29,18 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 		.OptionsSource(&ListOptionsSource)
 		.OnGenerateWidget_Raw(this, &SELLogCategoryWidget::OnGenerateWidgetForList)
 		.OnSelectionChanged_Raw(this, &SELLogCategoryWidget::OnListSelectionChanged)
+		.Content()
+		[
+			SNew(STextBlock)
+			.Text_Raw(this, &SELLogCategoryWidget::GetCurrentSelection)
+		]
 	];
+}
+
+FText SELLogCategoryWidget::GetCurrentSelection() const
+{
+	const auto selectedItem = SearchableComboBox->GetSelectedItem();
+	return FText::FromString(selectedItem.IsValid() ? *selectedItem : FString());
 }
 
 TSharedRef<SWidget> SELLogCategoryWidget::OnGenerateWidgetForList(ListItemPtr InItem) const
@@ -40,11 +51,9 @@ TSharedRef<SWidget> SELLogCategoryWidget::OnGenerateWidgetForList(ListItemPtr In
 void SELLogCategoryWidget::OnListSelectionChanged(ListItemPtr InItem, ESelectInfo::Type InSelectInfo)
 {
 	SearchableComboBox->SetSelectedItem(InItem);
-
+	SearchableComboBox->RefreshOptions();
 	if(OnSelectionChanged.IsBound())
 	{
-		FString string = *InItem.Get();
-		OnSelectionChanged.Execute(InItem.IsValid() ? *string : FName());	
+		OnSelectionChanged.Execute(InItem.IsValid() ? *InItem : FString());	
 	}
-	
 }

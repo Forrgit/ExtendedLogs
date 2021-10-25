@@ -15,8 +15,7 @@ TSharedRef<SWidget> SELLogCategoryGraphPin::GetDefaultValueWidget()
 	.OnSelectionChanged_Raw(this, &SELLogCategoryGraphPin::OnSelectionChanged);
 }
 
-void SELLogCategoryGraphPin::OnSelectionChanged(FName InItem)
+void SELLogCategoryGraphPin::OnSelectionChanged(FString InItem)
 {
-	
-	GraphPinObj->GetSchema()->TrySetDefaultValue(*GraphPinObj, InItem.ToString());
+	GraphPinObj->GetSchema()->TrySetDefaultValue(*GraphPinObj, InItem);
 }
