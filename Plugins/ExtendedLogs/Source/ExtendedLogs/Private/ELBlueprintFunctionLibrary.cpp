@@ -2,5 +2,5 @@
 
 void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategory LogCategory, EELLogVerbosity LogVerbosity)
 {
-	FMsg::Logf(nullptr, 0, *Message, static_cast<ELogVerbosity::Type>(LogVerbosity), TEXT("%s"), *Message);
+	FMsg::Logf(nullptr, 0, LogCategory.Name, static_cast<ELogVerbosity::Type>(LogVerbosity), TEXT("%s"), *Message);
 }
