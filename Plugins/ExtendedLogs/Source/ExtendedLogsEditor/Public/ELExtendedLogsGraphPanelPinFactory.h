@@ -1,14 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Widgets/DeclarativeSyntaxSupport.h"
-#include "EdGraphUtilities.h"
-#include "EdGraphSchema_K2.h"
 #include "ELLogCategory.h"
 #include "ELSLogCategoryGraphPin.h"
+#include "EdGraphSchema_K2.h"
+#include "EdGraphUtilities.h"
 #include "SGraphPin.h"
+#include "Widgets/DeclarativeSyntaxSupport.h"
 
-class FELExtendedLogsGraphPanelPinFactory: public FGraphPanelPinFactory
+class FELExtendedLogsGraphPanelPinFactory : public FGraphPanelPinFactory
 {
 	virtual TSharedPtr<class SGraphPin> CreatePin(class UEdGraphPin* InPin) const override
 	{

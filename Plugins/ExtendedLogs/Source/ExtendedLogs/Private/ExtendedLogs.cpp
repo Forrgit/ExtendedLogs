@@ -3,6 +3,7 @@
 #include "ExtendedLogs.h"
 
 #include "ELLogManager.h"
+
 #include "Engine/Engine.h"
 
 IMPLEMENT_MODULE(FExtendedLogsModule, ExtendedLogs)

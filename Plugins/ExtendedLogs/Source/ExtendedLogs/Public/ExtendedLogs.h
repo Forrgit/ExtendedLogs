@@ -20,7 +20,7 @@ public:
 	static FExtendedLogsModule& Get();
 
 	UELLogManager* GetLogManager() const;
-	
+
 private:
-	TStrongObjectPtr<UELLogManager> LogManager; 
+	TStrongObjectPtr<UELLogManager> LogManager;
 };

@@ -11,4 +11,3 @@ class EXTENDEDLOGS_API UELLogManager : public UObject
 public:
 	TArray<FName> GetLogCategories() const;
 };
-

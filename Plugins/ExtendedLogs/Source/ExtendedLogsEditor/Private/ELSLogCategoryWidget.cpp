@@ -2,6 +2,7 @@
 
 #include "ELExtendedLogSettings.h"
 #include "ELLogManager.h"
+
 #include "ExtendedLogs.h"
 #include "Internationalization/Regex.h"
 
@@ -10,19 +11,8 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 	OnSelectionChanged = InArgs._OnSelectionChanged;
 
 	ListItemPtr initialSelectedItem;
-	
-	// if(const auto logManager = FExtendedLogsModule::Get().GetLogManager())
-	// {
-	// 	for(const auto& logCategory : logManager->GetLogCategories())
-	// 	{
-	// 		GlobalOptionsSource.Add(MakeShareable(new FString(logCategory.ToString())));
-	// 		if(logCategory == InArgs._InitialItem)
-	// 		{
-	// 			initialSelectedItem = GlobalOptionsSource.Last();
-	// 		}
-	// 	}
-	// }
 
+	// clang-format off
 	SSearchableComboBox::Construct(SSearchableComboBox::FArguments()
 		.InitiallySelectedItem(initialSelectedItem)
 		.OptionsSource(&GlobalOptionsSource)
@@ -61,77 +51,42 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 			MenuContent.ToSharedRef()
 		];
 
+	// clang-format on
 	SetMenuContent(newMenuContent);
 
 	RefreshGlobalOptionSource();
-	
-	// ChildSlot
-	// [
-	// 	SNew(SVerticalBox)
-	// 	+SVerticalBox::Slot()
-	// 	[
-	// 		SNew(SHorizontalBox)
-	// 		+SHorizontalBox::Slot()
-	// 		[
-	// 			SAssignNew(CheckBoxUseFilter, SCheckBox)
-	// 			.IsChecked(ECheckBoxState::Unchecked)
-	// 			.OnCheckStateChanged_Raw(this, &SELLogCategoryWidget::OnCheckBoxStateChanged)
-	// 		]
-	// 		+SHorizontalBox::Slot()
-	// 		[
-	// 			SNew(STextBlock)
-	// 			.Text(FText::FromString(TEXT("Use filter")))
-	// 		]
-	// 	]
-	// 	+SVerticalBox::Slot()
-	// 	[
-	// 		SAssignNew(SearchableComboBox, SSearchableComboBox)
-	// 		.InitiallySelectedItem(initialSelectedItem)
-	// 		.OptionsSource(&ListOptionsSource)
-	// 		.OnGenerateWidget_Raw(this, &SELLogCategoryWidget::OnGenerateWidgetForList)
-	// 		.OnSelectionChanged_Raw(this, &SELLogCategoryWidget::OnListSelectionChanged)
-	// 		.Content()
-	// 		[
-	// 			SNew(STextBlock)
-	// 			.Text_Raw(this, &SELLogCategoryWidget::GetCurrentSelection)
-	// 		]
-	// 	]
-	// ];
 }
 
 void SELLogCategoryWidget::RefreshGlobalOptionSource()
 {
 	GlobalOptionsSource.Empty();
-	
-	if(const auto logManager = FExtendedLogsModule::Get().GetLogManager())
+
+	if (const auto logManager = FExtendedLogsModule::Get().GetLogManager())
 	{
 		const bool bUseFilter = CheckBoxUseFilter->IsChecked();
 		const FRegexPattern filterRegexPattern(UELExtendedLogsSettings::Get().LogCategoryFilter);
-		
-		for(const auto& logCategory : logManager->GetLogCategories())
+
+		for (const auto& logCategory : logManager->GetLogCategories())
 		{
 			bool bMustAdd = true;
-			if(bUseFilter)
+			if (bUseFilter)
 			{
-				FRegexMatcher matcher(filterRegexPattern, logCategory.ToString()) ;
+				FRegexMatcher matcher(filterRegexPattern, logCategory.ToString());
 				bMustAdd = matcher.FindNext();
 			}
 
-			if(bMustAdd)
+			if (bMustAdd)
 			{
-				GlobalOptionsSource.Add(MakeShareable(new FString(logCategory.ToString())));	
+				GlobalOptionsSource.Add(MakeShareable(new FString(logCategory.ToString())));
 			}
 		}
 	}
 
-	
-	
 	RefreshOptions();
 }
 
 FText SELLogCategoryWidget::GetCurrentSelection() const
 {
-	//const auto selectedItem = SearchableComboBox->GetSelectedItem();
 	const auto selectedItem = const_cast<SELLogCategoryWidget*>(this)->GetSelectedItem();
 	return FText::FromString(selectedItem.IsValid() ? *selectedItem : FString());
 }
@@ -143,18 +98,16 @@ TSharedRef<SWidget> SELLogCategoryWidget::OnGenerateWidgetForList(ListItemPtr In
 
 void SELLogCategoryWidget::OnListSelectionChanged(ListItemPtr InItem, ESelectInfo::Type InSelectInfo)
 {
-	//SearchableComboBox->SetSelectedItem(InItem);
-	//SearchableComboBox->RefreshOptions();
 	SetSelectedItem(InItem);
 	RefreshOptions();
-	
-	if(OnSelectionChanged.IsBound())
+
+	if (OnSelectionChanged.IsBound())
 	{
-		OnSelectionChanged.Execute(InItem.IsValid() ? *InItem : FString());	
+		OnSelectionChanged.Execute(InItem.IsValid() ? *InItem : FString());
 	}
 }
 
 void SELLogCategoryWidget::OnCheckBoxUseFilterStateChanged(ECheckBoxState State)
 {
-	RefreshGlobalOptionSource(); 
+	RefreshGlobalOptionSource();
 }

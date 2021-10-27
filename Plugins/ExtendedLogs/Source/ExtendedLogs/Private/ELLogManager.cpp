@@ -1,13 +1,17 @@
 #include "ELLogManager.h"
 
-#include "Logging/LogSuppressionInterface.h"
 #include "Logging/LogCategory.h"
+#include "Logging/LogSuppressionInterface.h"
 
 /** Log suppression system implementation **/
-class FELLogLogSuppressionImplementation: public FLogSuppressionInterface, private FSelfRegisteringExec
+class FELLogLogSuppressionImplementation : public FLogSuppressionInterface
+    , private FSelfRegisteringExec
 {
 public:
-	enum { NumInlineCategories = 256 };
+	enum
+	{
+		NumInlineCategories = 256
+	};
 
 	/** Categories waiting to be added to ReverseAssociations */
 	TArray<FLogCategoryBase*, TInlineAllocator<NumInlineCategories>> PendingAssociations;
@@ -21,21 +25,17 @@ public:
 
 	bool bInitialized = false;
 
-
 	/** Used by FLogCategoryBase to register itself with the global category table **/
 	virtual void AssociateSuppress(struct FLogCategoryBase* Destination) override
 	{
-		
 	}
 	/** Used by FLogCategoryBase to unregister itself from the global category table **/
 	virtual void DisassociateSuppress(struct FLogCategoryBase* Destination) override
 	{
-		
 	}
 	/** Called by appInit once the config files and commandline are set up. The log suppression system uses these to setup the boot time defaults. **/
 	virtual void ProcessConfigAndCommandLine() override
 	{
-		
 	}
 };
 
@@ -45,8 +45,8 @@ TArray<FName> UELLogManager::GetLogCategories() const
 	FELLogLogSuppressionImplementation& elLogInterface = *reinterpret_cast<FELLogLogSuppressionImplementation*>(&logInterface);
 
 	TArray<FName> categories;
-	
-	for(auto& logData :	elLogInterface.ReverseAssociations)
+
+	for (auto& logData : elLogInterface.ReverseAssociations)
 	{
 		categories.Add(logData.Key);
 	}

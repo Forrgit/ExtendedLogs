@@ -10,9 +10,11 @@ void SELLogCategoryGraphPin::Construct(const FArguments& InArgs, UEdGraphPin* In
 
 TSharedRef<SWidget> SELLogCategoryGraphPin::GetDefaultValueWidget()
 {
+	// clang-format off
 	return SNew(SELLogCategoryWidget)
-	.InitialItem(*GraphPinObj->GetDefaultAsString())
-	.OnSelectionChanged_Raw(this, &SELLogCategoryGraphPin::OnSelectionChanged);
+		.InitialItem(*GraphPinObj->GetDefaultAsString())
+		.OnSelectionChanged_Raw(this, &SELLogCategoryGraphPin::OnSelectionChanged);
+	// clang-format on
 }
 
 void SELLogCategoryGraphPin::OnSelectionChanged(FString InItem)

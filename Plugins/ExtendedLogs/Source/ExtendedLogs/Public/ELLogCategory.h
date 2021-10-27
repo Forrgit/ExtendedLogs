@@ -17,21 +17,24 @@ UENUM(BlueprintType)
 enum class EELLogVerbosity : uint8
 {
 	/** Not used */
-	NoLogging		= 0,
+	NoLogging = 0,
 
-	/** Always prints a fatal error to console (and log file) and crashes (even if logging is disabled) */
+	/** Always prints a fatal error to console (and log file) and crashes (even if,
+	* logging is disabled) */
 	Fatal,
 
-	/** 
-* Prints an error to console (and log file). 
-* Commandlets and the editor collect and report errors. Error messages result in commandlet failure.
-*/
+	/**
+	* Prints an error to console (and log file).
+	* Commandlets and the editor collect and report errors. Error messages result
+	* in commandlet failure.
+	*/
 	Error,
 
-	/** 
-* Prints a warning to console (and log file).
-* Commandlets and the editor collect and report warnings. Warnings can be treated as an error.
-*/
+	/**
+	* Prints a warning to console (and log file).
+	* Commandlets and the editor collect and report warnings. Warnings can be
+	* treated as an error.
+	*/
 	Warning,
 
 	/** Prints a message to console (and log file) */
@@ -40,16 +43,17 @@ enum class EELLogVerbosity : uint8
 	/** Prints a message to a log file (does not print to console) */
 	Log,
 
-	/** 
-* Prints a verbose message to a log file (if Verbose logging is enabled for the given category, 
-* usually used for detailed logging) 
-*/
+	/**
+	* Prints a verbose message to a log file (if Verbose logging is enabled for
+	* the given category, usually used for detailed logging)
+	*/
 	Verbose,
 
-	/** 
-* Prints a verbose message to a log file (if VeryVerbose logging is enabled, 
-* usually used for detailed logging that would otherwise spam output) 
-*/
+	/**
+	*
+	* Prints a verbose message to a log file (if VeryVerbose logging is enabled,
+	* usually used for detailed logging that would otherwise spam output)
+	*/
 	VeryVerbose,
 };
 

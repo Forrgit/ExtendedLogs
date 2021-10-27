@@ -2,7 +2,6 @@
 
 #include "SGraphPin.h"
 
-
 class SELLogCategoryGraphPin : public SGraphPin
 {
 public:
@@ -12,10 +11,9 @@ public:
 	void Construct(const FArguments& InArgs, UEdGraphPin* InGraphPinObj);
 
 	//~ Begin SGraphPin Interface
-	virtual TSharedRef<SWidget>	GetDefaultValueWidget() override;
+	virtual TSharedRef<SWidget> GetDefaultValueWidget() override;
 	//~ End SGraphPin Interface
 
 private:
 	void OnSelectionChanged(FString InItem);
 };
-
