@@ -9,6 +9,8 @@ class EXTENDEDLOGS_API UELExtendedLogsSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
 public:
+	UELExtendedLogsSettings();
+	
 	static const UELExtendedLogsSettings& Get()
 	{
 		return *GetDefault<UELExtendedLogsSettings>();

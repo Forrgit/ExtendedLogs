@@ -1,13 +1,16 @@
 #pragma once
 
 #include "Widgets/SCompoundWidget.h"
+#include "Widgets/Input/SCheckBox.h"
+
+#include "SSearchableComboBox.h"
 
 //SListViewSelectorDropdownMenu
 //SListView
 
 class SSearchableComboBox;
 
-class SELLogCategoryWidget : public SCompoundWidget
+class SELLogCategoryWidget : public SSearchableComboBox
 {
 	using ListItemPtr = TSharedPtr<FString>;
 	//using ListViewType = SListView<ListItemPtrType>;
@@ -33,14 +36,21 @@ public:
 	void Construct(const FArguments& InArgs);
 
 private:
+	void RefreshGlobalOptionSource();
+
 	FText GetCurrentSelection() const;
 	TSharedRef<SWidget> OnGenerateWidgetForList(ListItemPtr InItem) const;
 	void OnListSelectionChanged(ListItemPtr InItem, ESelectInfo::Type InSelectInfo);
-	
+
+	void OnCheckBoxUseFilterStateChanged(ECheckBoxState State);
+
 private:
 	FOnSelectionChangedDelegate OnSelectionChanged;
 
-	TSharedPtr<SSearchableComboBox> SearchableComboBox;  
-	TArray<ListItemPtr> ListOptionsSource;
+	TSharedPtr<SCheckBox> CheckBoxUseFilter;
+	
+	//TSharedPtr<SSearchableComboBox> SearchableComboBox;  
+	TArray<ListItemPtr> GlobalOptionsSource;
 };
+
 
