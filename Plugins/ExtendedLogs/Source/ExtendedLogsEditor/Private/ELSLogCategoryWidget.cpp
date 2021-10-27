@@ -1,6 +1,6 @@
 #include "ELSLogCategoryWidget.h"
 
-#include "ELExtendedLogSettings.h"
+#include "ELExtendedLogsSettings.h"
 #include "ELLogManager.h"
 
 #include "ExtendedLogs.h"
@@ -8,13 +8,12 @@
 
 void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 {
-	OnSelectionChanged = InArgs._OnSelectionChanged;
+	const FText useFilterTooltip = FText::FromString(FString::Printf(TEXT("If true, the filter @%s from the %s in project settings is used"), GET_MEMBER_NAME_STRING_CHECKED(UELExtendedLogsSettings, LogCategoryWidgetFilter), *UELExtendedLogsSettings::StaticClass()->GetName()));
 
-	ListItemPtr initialSelectedItem;
+	OnSelectionChanged = InArgs._OnSelectionChanged;
 
 	// clang-format off
 	SSearchableComboBox::Construct(SSearchableComboBox::FArguments()
-		.InitiallySelectedItem(initialSelectedItem)
 		.OptionsSource(&GlobalOptionsSource)
 		.OnGenerateWidget_Raw(this, &SELLogCategoryWidget::OnGenerateWidgetForList)
 		.OnSelectionChanged_Raw(this, &SELLogCategoryWidget::OnListSelectionChanged)
@@ -35,16 +34,19 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 			.AutoWidth()
 			[
 				SAssignNew(CheckBoxUseFilter, SCheckBox)
-				.IsChecked(ECheckBoxState::Unchecked)
+				.IsChecked(UELExtendedLogsSettings::Get().bUseLogCategoryWidgetFilterByDefault ? ECheckBoxState::Checked : ECheckBoxState::Unchecked)
 				.OnCheckStateChanged_Raw(this, &SELLogCategoryWidget::OnCheckBoxUseFilterStateChanged)
+				.ToolTipText(useFilterTooltip)
 			]
 			+SHorizontalBox::Slot()
 			.HAlign(HAlign_Left)
 			.AutoWidth()
 			[
 				SNew(STextBlock)
-				.Text(FText::FromString(TEXT("Use filter")))
+				.Text(FText::FromString(TEXT("Use default log category filter")))
+				.ToolTipText(useFilterTooltip)
 			]
+			
 		]
 		+SVerticalBox::Slot()
 		[
@@ -52,9 +54,21 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 		];
 
 	// clang-format on
-	SetMenuContent(newMenuContent);
 
+	SetMenuContent(newMenuContent);
 	RefreshGlobalOptionSource();
+
+	if (InArgs._InitialItem != NAME_None)
+	{
+		const auto initialItemPtr = Algo::FindByPredicate(GlobalOptionsSource, [initialItem = InArgs._InitialItem.ToString()](ListItemPtr Item) {
+			return *Item == initialItem;
+		});
+		if (initialItemPtr != nullptr)
+		{
+			SetSelectedItem(*initialItemPtr);
+			RefreshOptions();
+		}
+	}
 }
 
 void SELLogCategoryWidget::RefreshGlobalOptionSource()
@@ -64,15 +78,23 @@ void SELLogCategoryWidget::RefreshGlobalOptionSource()
 	if (const auto logManager = FExtendedLogsModule::Get().GetLogManager())
 	{
 		const bool bUseFilter = CheckBoxUseFilter->IsChecked();
-		const FRegexPattern filterRegexPattern(UELExtendedLogsSettings::Get().LogCategoryFilter);
 
 		for (const auto& logCategory : logManager->GetLogCategories())
 		{
 			bool bMustAdd = true;
 			if (bUseFilter)
 			{
-				FRegexMatcher matcher(filterRegexPattern, logCategory.ToString());
-				bMustAdd = matcher.FindNext();
+				const auto& settings = UELExtendedLogsSettings::Get();
+				if (settings.bUseLogCategoryWidgetRegularExpression)
+				{
+					const FRegexPattern filterRegexPattern(UELExtendedLogsSettings::Get().LogCategoryWidgetFilter);
+					FRegexMatcher matcher(filterRegexPattern, logCategory.ToString());
+					bMustAdd = matcher.FindNext();
+				}
+				else
+				{
+					bMustAdd = logCategory.ToString().Find(settings.LogCategoryWidgetFilter, ESearchCase::Type::IgnoreCase) >= 0;
+				}
 			}
 
 			if (bMustAdd)

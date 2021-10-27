@@ -1,7 +1,7 @@
-#include "ELExtendedLogSettings.h"
+#include "ELExtendedLogsSettings.h"
 
 UELExtendedLogsSettings::UELExtendedLogsSettings()
 {
 	CategoryName = "Plugins";
-	SectionName = "ExtendedLogsSettings";
+	SectionName = "Extended Logs Settings";
 }
