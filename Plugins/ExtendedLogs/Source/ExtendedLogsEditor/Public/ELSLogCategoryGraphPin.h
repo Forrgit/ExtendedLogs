@@ -15,5 +15,8 @@ public:
 	//~ End SGraphPin Interface
 
 private:
-	void OnSelectionChanged(FString InItem);
+	FString GetParsedPinDefaultValue() const;
+	void SetPinDefaultValue(const FString& Value);
+
+	void OnSelectionChanged(const FString& InItem);
 };
