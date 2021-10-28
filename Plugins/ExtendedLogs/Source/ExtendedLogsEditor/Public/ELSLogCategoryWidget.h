@@ -34,6 +34,8 @@ public:
 	 */
 	void Construct(const FArguments& InArgs);
 
+	FOnSelectionChangedDelegate& GetOnSelectionChanged();
+
 protected:
 	virtual void RefreshGlobalOptionSource();
 

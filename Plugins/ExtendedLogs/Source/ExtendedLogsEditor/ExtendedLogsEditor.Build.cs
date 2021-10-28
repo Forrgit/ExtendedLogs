@@ -6,7 +6,8 @@ namespace UnrealBuildTool.Rules
 	{
 		public ExtendedLogsEditor(ReadOnlyTargetRules Target) : base(Target)
 		{
-			PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+			PCHUsage = ModuleRules.PCHUsageMode.NoPCHs;
+			bUseUnity = false;
 
 			PublicDependencyModuleNames.AddRange(
 				new string[] {
@@ -20,6 +21,7 @@ namespace UnrealBuildTool.Rules
 					"BlueprintGraph",
 					"UnrealEd",
 					"EditorWidgets",
+					"PropertyEditor",
 					
 					"ExtendedLogs"
 				}

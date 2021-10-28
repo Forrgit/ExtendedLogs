@@ -3,6 +3,7 @@
 #include "ELExtendedLogsSettings.h"
 #include "ELLogManager.h"
 
+#include "Algo/Find.h"
 #include "ExtendedLogs.h"
 #include "Internationalization/Regex.h"
 
@@ -69,6 +70,11 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 			RefreshOptions();
 		}
 	}
+}
+
+SELLogCategoryWidget::FOnSelectionChangedDelegate& SELLogCategoryWidget::GetOnSelectionChanged()
+{
+	return OnSelectionChanged;
 }
 
 void SELLogCategoryWidget::RefreshGlobalOptionSource()

@@ -9,7 +9,7 @@ struct EXTENDEDLOGS_API FELLogCategory
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName Name;
 };
 
