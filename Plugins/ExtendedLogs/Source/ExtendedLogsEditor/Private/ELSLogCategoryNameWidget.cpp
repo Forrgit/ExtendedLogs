@@ -93,13 +93,13 @@ void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 				const auto& settings = UELExtendedLogsSettings::Get();
 				if (settings.bUseLogCategoryWidgetRegularExpression)
 				{
-					const FRegexPattern filterRegexPattern(UELExtendedLogsSettings::Get().LogCategoryWidgetFilter);
+					const FRegexPattern filterRegexPattern(UELExtendedLogsSettings::Get().LogCategoryWidgetRegularExpression);
 					FRegexMatcher matcher(filterRegexPattern, logCategory.ToString());
 					bMustAdd = matcher.FindNext();
 				}
 				else
 				{
-					bMustAdd = logCategory.ToString().Find(settings.LogCategoryWidgetFilter, ESearchCase::Type::IgnoreCase) >= 0;
+					bMustAdd = settings.LogCategoryWidgetFilter.IsEmpty() || logCategory.ToString().Find(settings.LogCategoryWidgetFilter, ESearchCase::Type::IgnoreCase) >= 0;
 				}
 			}
 
