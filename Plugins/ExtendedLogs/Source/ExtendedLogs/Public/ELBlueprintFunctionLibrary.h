@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ELLogCategory.h"
+#include "ELTypes.h"
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 
@@ -12,5 +12,5 @@ class EXTENDEDLOGS_API UELBlueprintFunctionLibrary : public UBlueprintFunctionLi
 	GENERATED_BODY()
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Extended logs", meta = (DisplayName = "UE LOG"))
-	static void Log(const FString& Message, FELLogCategory LogCategoryName, EELLogVerbosity LogVerbosity);
+	static void Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity);
 };

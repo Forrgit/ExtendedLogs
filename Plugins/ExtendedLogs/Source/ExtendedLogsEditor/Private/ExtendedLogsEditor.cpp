@@ -3,12 +3,11 @@
 #include "ExtendedLogsEditor.h"
 
 #include "ELExtendedLogsGraphPanelPinFactory.h"
-#include "ELLogCategoryDetailsCustomization.h"
+#include "ELLogCategoryNameDetailsCustomization.h"
 
 #include "Engine/Engine.h"
 
 IMPLEMENT_MODULE(FExtendedLogsEditorModule, ExtendedLogsEditor)
-
 
 void FExtendedLogsEditorModule::StartupModule()
 {
@@ -16,7 +15,7 @@ void FExtendedLogsEditorModule::StartupModule()
 	FEdGraphUtilities::RegisterVisualPinFactory(extendedLogsGraphPanelPinFactory);
 
 	auto& propertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	propertyModule.RegisterCustomPropertyTypeLayout("ELLogCategory", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FELLogCategoryCustomization::MakeInstance));
+	propertyModule.RegisterCustomPropertyTypeLayout("ELLogCategoryName", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FELLogCategoryNameCustomization::MakeInstance));
 }
 
 void FExtendedLogsEditorModule::ShutdownModule()

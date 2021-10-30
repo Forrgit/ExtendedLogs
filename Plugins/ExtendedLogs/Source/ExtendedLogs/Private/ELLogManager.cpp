@@ -1,7 +1,7 @@
 #include "ELLogManager.h"
 
 #include "ELExtendedLogsSettings.h"
-#include "ELLogCategory.h"
+#include "ELTypes.h"
 
 #include "Algo/AllOf.h"
 #include "Logging/LogCategory.h"
@@ -78,7 +78,10 @@ TArray<FName> UELLogManager::GetLogCategoriesNames() const
 const TMultiMap<FName, FLogCategoryBase*>& UELLogManager::GetRawLogCategories() const
 {
 	auto& logInterface = FLogSuppressionInterface::Get();
+
+#pragma warning(disable : 4946)
 	FELLogLogSuppressionImplementation& elLogInterface = *reinterpret_cast<FELLogLogSuppressionImplementation*>(&logInterface);
+#pragma warning(default : 4946)
 
 	return elLogInterface.ReverseAssociations;
 }
@@ -87,7 +90,7 @@ void UELLogManager::RegisterLogs()
 {
 	auto& settings = UELExtendedLogsSettings::Get();
 
-	for (auto& logCategory : settings.DeclaredLogs)
+	for (auto& logCategory : settings.DeclaredLogCategories)
 	{
 		DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.CategoryName, ConvertLogCategory(logCategory.Verbosity), ELogVerbosity::All)));
 	}

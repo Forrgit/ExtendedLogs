@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ELDeclaredLog.h"
+#include "ELDeclarationLogCategoryInfo.h"
 #include "Engine/DeveloperSettings.h"
 
 #include "ELExtendedLogsSettings.generated.h"
 
-UCLASS(Config = Engine, defaultconfig)
+UCLASS(config = Engine, defaultconfig)
 class EXTENDEDLOGS_API UELExtendedLogsSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
@@ -35,7 +35,7 @@ public:
 	bool bUseLogCategoryWidgetFilterByDefault;
 
 	UPROPERTY(EditAnywhere, Config)
-	TArray<FELDeclaredLogCategory> DeclaredLogs;
+	TArray<FELDeclarationLogCategoryInfo> DeclaredLogCategories;
 
 	/*
 	 * If @bUseLogCategoryWidgetRegularExpression true, it replaces @LogCategoryWidgetFilter string filter

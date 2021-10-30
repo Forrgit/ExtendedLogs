@@ -2,10 +2,10 @@
 
 #include "SGraphPin.h"
 
-class SELLogCategoryGraphPin : public SGraphPin
+class SELLogCategoryNameGraphPin : public SGraphPin
 {
 public:
-	SLATE_BEGIN_ARGS(SELLogCategoryGraphPin) {}
+	SLATE_BEGIN_ARGS(SELLogCategoryNameGraphPin) {}
 	SLATE_END_ARGS()
 
 	void Construct(const FArguments& InArgs, UEdGraphPin* InGraphPinObj);

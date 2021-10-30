@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ELLogCategory.h"
+#include "ELTypes.h"
 
 #include "CoreMinimal.h"
 
-#include "ELDeclaredLog.generated.h"
+#include "ELDeclarationLogCategoryInfo.generated.h"
 
 USTRUCT(BlueprintType)
-struct EXTENDEDLOGS_API FELDeclaredLogCategory
+struct EXTENDEDLOGS_API FELDeclarationLogCategoryInfo
 {
 	GENERATED_BODY()
 public:

@@ -2,12 +2,12 @@
 
 #include "IPropertyTypeCustomization.h"
 
-class SELLogCategoryWidget;
+class SELLogCategoryNameWidget;
 
-class FELLogCategoryCustomization : public IPropertyTypeCustomization
+class FELLogCategoryNameCustomization : public IPropertyTypeCustomization
 {
 public:
-	virtual ~FELLogCategoryCustomization() override;
+	virtual ~FELLogCategoryNameCustomization() override;
 
 	static TSharedRef<IPropertyTypeCustomization> MakeInstance();
 
@@ -15,10 +15,10 @@ public:
 	virtual void CustomizeChildren(TSharedRef<IPropertyHandle> PropertyHandle, IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& CustomizationUtils) override;
 
 private:
-	void OnLogNameValueChanged(const FString& NewValue);
+	void OnNameValueChanged(const FString& NewValue);
 
 private:
-	TSharedPtr<SELLogCategoryWidget> LogCategoryWidget;
+	TSharedPtr<SELLogCategoryNameWidget> LogCategoryWidget;
 
-	TSharedPtr<IPropertyHandle> LogNamePropertyHandle;
+	TSharedPtr<IPropertyHandle> NamePropertyHandle;
 };

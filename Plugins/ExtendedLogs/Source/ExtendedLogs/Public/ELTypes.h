@@ -1,11 +1,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/ObjectMacros.h"
 
-#include "ELLogCategory.generated.h"
+#include "ELTypes.generated.h"
 
 USTRUCT(BlueprintType)
-struct EXTENDEDLOGS_API FELLogCategory
+struct EXTENDEDLOGS_API FELLogCategoryName
 {
 	GENERATED_BODY()
 public:

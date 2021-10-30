@@ -2,22 +2,17 @@
 
 #include "SSearchableComboBox.h"
 #include "Widgets/Input/SCheckBox.h"
-#include "Widgets/SCompoundWidget.h"
-
-//SListViewSelectorDropdownMenu
-//SListView
 
 class SSearchableComboBox;
 
-class SELLogCategoryWidget : public SSearchableComboBox
+class SELLogCategoryNameWidget : public SSearchableComboBox
 {
 	using ListItemPtr = TSharedPtr<FString>;
-	//using ListViewType = SListView<ListItemPtrType>;
 
 	DECLARE_DELEGATE_OneParam(FOnSelectionChangedDelegate, const FString& /*ItemValue*/);
 
 public:
-	SLATE_BEGIN_ARGS(SELLogCategoryWidget)
+	SLATE_BEGIN_ARGS(SELLogCategoryNameWidget)
 	{
 	}
 
@@ -50,6 +45,5 @@ private:
 
 	TSharedPtr<SCheckBox> CheckBoxUseFilter;
 
-	//TSharedPtr<SSearchableComboBox> SearchableComboBox;
 	TArray<ListItemPtr> GlobalOptionsSource;
 };

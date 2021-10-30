@@ -5,7 +5,7 @@
 #include "ExtendedLogs.h"
 #include "Runtime/Launch/Resources/Version.h"
 
-void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategory LogCategoryName, EELLogVerbosity LogVerbosity)
+void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity)
 {
 	auto& logsModule = FExtendedLogsModule::Get();
 	const auto logManager = logsModule.GetLogManager();

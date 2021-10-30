@@ -1,8 +1,9 @@
 #pragma once
 
+#include "ELSLogCategoryNameGraphPin.h"
+#include "ELTypes.h"
+
 #include "CoreMinimal.h"
-#include "ELLogCategory.h"
-#include "ELSLogCategoryGraphPin.h"
 #include "EdGraphSchema_K2.h"
 #include "EdGraphUtilities.h"
 #include "SGraphPin.h"
@@ -16,9 +17,9 @@ class FELExtendedLogsGraphPanelPinFactory : public FGraphPanelPinFactory
 		{
 			if (const UScriptStruct* pinStructType = Cast<UScriptStruct>(InPin->PinType.PinSubCategoryObject.Get()))
 			{
-				if (pinStructType->IsChildOf(FELLogCategory::StaticStruct()))
+				if (pinStructType->IsChildOf(FELLogCategoryName::StaticStruct()))
 				{
-					return SNew(SELLogCategoryGraphPin, InPin);
+					return SNew(SELLogCategoryNameGraphPin, InPin);
 				}
 			}
 		}

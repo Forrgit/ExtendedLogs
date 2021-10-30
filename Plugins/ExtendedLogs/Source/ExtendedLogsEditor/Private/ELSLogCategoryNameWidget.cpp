@@ -1,4 +1,4 @@
-#include "ELSLogCategoryWidget.h"
+#include "ELSLogCategoryNameWidget.h"
 
 #include "ELExtendedLogsSettings.h"
 #include "ELLogManager.h"
@@ -7,7 +7,7 @@
 #include "ExtendedLogs.h"
 #include "Internationalization/Regex.h"
 
-void SELLogCategoryWidget::Construct(const FArguments& InArgs)
+void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 {
 	const FText useFilterTooltip = FText::FromString(FString::Printf(TEXT("If true, the filter @%s from the %s in project settings is used"), GET_MEMBER_NAME_STRING_CHECKED(UELExtendedLogsSettings, LogCategoryWidgetFilter), *UELExtendedLogsSettings::StaticClass()->GetName()));
 
@@ -16,12 +16,12 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 	// clang-format off
 	SSearchableComboBox::Construct(SSearchableComboBox::FArguments()
 		.OptionsSource(&GlobalOptionsSource)
-		.OnGenerateWidget_Raw(this, &SELLogCategoryWidget::OnGenerateWidgetForList)
-		.OnSelectionChanged_Raw(this, &SELLogCategoryWidget::OnListSelectionChanged)
+		.OnGenerateWidget_Raw(this, &SELLogCategoryNameWidget::OnGenerateWidgetForList)
+		.OnSelectionChanged_Raw(this, &SELLogCategoryNameWidget::OnListSelectionChanged)
 		.Content()
 		[
 			SNew(STextBlock)
-			.Text_Raw(this, &SELLogCategoryWidget::GetCurrentSelection)
+			.Text_Raw(this, &SELLogCategoryNameWidget::GetCurrentSelection)
 		]);
 
 	TSharedRef<SWidget> newMenuContent =
@@ -36,7 +36,7 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 			[
 				SAssignNew(CheckBoxUseFilter, SCheckBox)
 				.IsChecked(UELExtendedLogsSettings::Get().bUseLogCategoryWidgetFilterByDefault ? ECheckBoxState::Checked : ECheckBoxState::Unchecked)
-				.OnCheckStateChanged_Raw(this, &SELLogCategoryWidget::OnCheckBoxUseFilterStateChanged)
+				.OnCheckStateChanged_Raw(this, &SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged)
 				.ToolTipText(useFilterTooltip)
 			]
 			+SHorizontalBox::Slot()
@@ -72,12 +72,12 @@ void SELLogCategoryWidget::Construct(const FArguments& InArgs)
 	}
 }
 
-SELLogCategoryWidget::FOnSelectionChangedDelegate& SELLogCategoryWidget::GetOnSelectionChanged()
+SELLogCategoryNameWidget::FOnSelectionChangedDelegate& SELLogCategoryNameWidget::GetOnSelectionChanged()
 {
 	return OnSelectionChanged;
 }
 
-void SELLogCategoryWidget::RefreshGlobalOptionSource()
+void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 {
 	GlobalOptionsSource.Empty();
 
@@ -113,18 +113,18 @@ void SELLogCategoryWidget::RefreshGlobalOptionSource()
 	RefreshOptions();
 }
 
-FText SELLogCategoryWidget::GetCurrentSelection() const
+FText SELLogCategoryNameWidget::GetCurrentSelection() const
 {
-	const auto selectedItem = const_cast<SELLogCategoryWidget*>(this)->GetSelectedItem();
+	const auto selectedItem = const_cast<SELLogCategoryNameWidget*>(this)->GetSelectedItem();
 	return FText::FromString(selectedItem.IsValid() ? *selectedItem : FString());
 }
 
-TSharedRef<SWidget> SELLogCategoryWidget::OnGenerateWidgetForList(ListItemPtr InItem) const
+TSharedRef<SWidget> SELLogCategoryNameWidget::OnGenerateWidgetForList(ListItemPtr InItem) const
 {
 	return SNew(STextBlock).Text(FText::FromString(*InItem));
 }
 
-void SELLogCategoryWidget::OnListSelectionChanged(ListItemPtr InItem, ESelectInfo::Type InSelectInfo)
+void SELLogCategoryNameWidget::OnListSelectionChanged(ListItemPtr InItem, ESelectInfo::Type InSelectInfo)
 {
 	SetSelectedItem(InItem);
 	RefreshOptions();
@@ -135,7 +135,7 @@ void SELLogCategoryWidget::OnListSelectionChanged(ListItemPtr InItem, ESelectInf
 	}
 }
 
-void SELLogCategoryWidget::OnCheckBoxUseFilterStateChanged(ECheckBoxState State)
+void SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged(ECheckBoxState State)
 {
 	RefreshGlobalOptionSource();
 }
