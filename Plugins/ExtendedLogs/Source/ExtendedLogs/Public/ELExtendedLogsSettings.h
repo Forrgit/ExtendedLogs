@@ -1,15 +1,20 @@
 #pragma once
 
+#include "ELDeclaredLog.h"
 #include "Engine/DeveloperSettings.h"
 
 #include "ELExtendedLogsSettings.generated.h"
 
-UCLASS(Config = Engine)
+UCLASS(Config = Engine, defaultconfig)
 class EXTENDEDLOGS_API UELExtendedLogsSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
 public:
 	UELExtendedLogsSettings();
+
+#if WITH_EDITOR
+	virtual FText GetSectionText() const override;
+#endif //WITH_EDITOR
 
 	static const UELExtendedLogsSettings& Get()
 	{
@@ -28,6 +33,9 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, Config)
 	bool bUseLogCategoryWidgetFilterByDefault;
+
+	UPROPERTY(EditAnywhere, Config)
+	TArray<FELDeclaredLogCategory> DeclaredLogs;
 
 	/*
 	 * If @bUseLogCategoryWidgetRegularExpression true, it replaces @LogCategoryWidgetFilter string filter

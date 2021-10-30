@@ -11,6 +11,7 @@ IMPLEMENT_MODULE(FExtendedLogsModule, ExtendedLogs)
 void FExtendedLogsModule::StartupModule()
 {
 	LogManager.Reset(NewObject<UELLogManager>());
+	LogManager->InitializeManager();
 }
 
 void FExtendedLogsModule::ShutdownModule()

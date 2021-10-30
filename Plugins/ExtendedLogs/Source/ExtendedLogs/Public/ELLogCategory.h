@@ -60,3 +60,8 @@ enum class EELLogVerbosity : uint8
 static_assert(static_cast<uint8>(EELLogVerbosity::NoLogging) == static_cast<uint8>(ELogVerbosity::NoLogging), "EELogVerbosity start log category must be equals with ELogVerbosity");
 
 static_assert(static_cast<uint8>(EELLogVerbosity::VeryVerbose) == static_cast<uint8>(ELogVerbosity::VeryVerbose), "EELogVerbosity end log category must be equals with ELogVerbosity");
+
+inline ELogVerbosity::Type ConvertLogCategory(EELLogVerbosity LogVerbosity)
+{
+	return static_cast<ELogVerbosity::Type>(LogVerbosity);
+}

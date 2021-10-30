@@ -85,7 +85,7 @@ void SELLogCategoryWidget::RefreshGlobalOptionSource()
 	{
 		const bool bUseFilter = CheckBoxUseFilter->IsChecked();
 
-		for (const auto& logCategory : logManager->GetLogCategories())
+		for (const auto& logCategory : logManager->GetLogCategoriesNames())
 		{
 			bool bMustAdd = true;
 			if (bUseFilter)

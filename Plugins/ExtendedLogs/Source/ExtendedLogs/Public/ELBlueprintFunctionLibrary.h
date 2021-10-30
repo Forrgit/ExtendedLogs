@@ -10,8 +10,7 @@ UCLASS()
 class EXTENDEDLOGS_API UELBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-public:
+protected:
 	UFUNCTION(BlueprintCallable, Category = "Extended logs", meta = (DisplayName = "UE LOG"))
-	static void Log(const FString& Message, FELLogCategory LogCategory, EELLogVerbosity LogVerbosity);
+	static void Log(const FString& Message, FELLogCategory LogCategoryName, EELLogVerbosity LogVerbosity);
 };
-

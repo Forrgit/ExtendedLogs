@@ -1,5 +1,9 @@
 #include "ELLogManager.h"
 
+#include "ELExtendedLogsSettings.h"
+#include "ELLogCategory.h"
+
+#include "Algo/AllOf.h"
 #include "Logging/LogCategory.h"
 #include "Logging/LogSuppressionInterface.h"
 
@@ -39,17 +43,52 @@ public:
 	}
 };
 
-TArray<FName> UELLogManager::GetLogCategories() const
+void UELLogManager::InitializeManager()
 {
-	auto& logInterface = FLogSuppressionInterface::Get();
-	FELLogLogSuppressionImplementation& elLogInterface = *reinterpret_cast<FELLogLogSuppressionImplementation*>(&logInterface);
+	RegisterLogs();
+}
 
+TArray<FLogCategoryBase*> UELLogManager::FindLogCategory(FName LogCategoryName) const
+{
+	TArray<FLogCategoryBase*> foundLogs;
+	GetRawLogCategories().MultiFind(LogCategoryName, foundLogs);
+
+	return foundLogs;
+}
+
+bool UELLogManager::IsSuppressedLogCategory(FName LogCategoryName, ELogVerbosity::Type Verbosity) const
+{
+	return Algo::AllOf(FindLogCategory(LogCategoryName), [Verbosity](FLogCategoryBase* LogCategory) {
+		return LogCategory != nullptr && LogCategory->IsSuppressed(Verbosity);
+	});
+}
+
+TArray<FName> UELLogManager::GetLogCategoriesNames() const
+{
 	TArray<FName> categories;
 
-	for (auto& logData : elLogInterface.ReverseAssociations)
+	for (auto& logData : GetRawLogCategories())
 	{
 		categories.Add(logData.Key);
 	}
 
 	return categories;
+}
+
+const TMultiMap<FName, FLogCategoryBase*>& UELLogManager::GetRawLogCategories() const
+{
+	auto& logInterface = FLogSuppressionInterface::Get();
+	FELLogLogSuppressionImplementation& elLogInterface = *reinterpret_cast<FELLogLogSuppressionImplementation*>(&logInterface);
+
+	return elLogInterface.ReverseAssociations;
+}
+
+void UELLogManager::RegisterLogs()
+{
+	auto& settings = UELExtendedLogsSettings::Get();
+
+	for (auto& logCategory : settings.DeclaredLogs)
+	{
+		DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.CategoryName, ConvertLogCategory(logCategory.Verbosity), ELogVerbosity::All)));
+	}
 }

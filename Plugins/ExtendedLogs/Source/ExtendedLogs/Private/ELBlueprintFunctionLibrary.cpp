@@ -1,19 +1,29 @@
 #include "ELBlueprintFunctionLibrary.h"
 
+#include "ELLogManager.h"
+
+#include "ExtendedLogs.h"
 #include "Runtime/Launch/Resources/Version.h"
 
-void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategory LogCategory, EELLogVerbosity LogVerbosity)
+void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategory LogCategoryName, EELLogVerbosity LogVerbosity)
 {
-	FString bpFile;
+	auto& logsModule = FExtendedLogsModule::Get();
+	const auto logManager = logsModule.GetLogManager();
+	if (logManager == nullptr || logManager->IsSuppressedLogCategory(LogCategoryName.Name, ConvertLogCategory(LogVerbosity)))
+	{
+		return;
+	}
+
+	FString logSuffix;
 
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 26) || ENGINE_MAJOR_VERSION > 4
 	const FBlueprintContextTracker* blueprintExceptionTracker = FBlueprintContextTracker::TryGet();
 	if (blueprintExceptionTracker != nullptr && blueprintExceptionTracker->GetScriptStack().Num() > 0)
 	{
 		const FFrame* lastFrame = blueprintExceptionTracker->GetScriptStack().Last();
-		bpFile = GetNameSafe(lastFrame->Object);
+		logSuffix = GetNameSafe(lastFrame->Object);
 	}
 #endif
 
-	FMsg::Logf(nullptr, 0, LogCategory.Name, static_cast<ELogVerbosity::Type>(LogVerbosity), TEXT("%s [%s]"), *Message, *bpFile);
+	FMsg::Logf(nullptr, 0, LogCategoryName.Name, ConvertLogCategory(LogVerbosity), TEXT("%s [%s]"), *Message, *logSuffix);
 }
