@@ -66,3 +66,8 @@ inline ELogVerbosity::Type ConvertLogCategory(EELLogVerbosity LogVerbosity)
 {
 	return static_cast<ELogVerbosity::Type>(LogVerbosity);
 }
+
+inline EELLogVerbosity ConvertLogCategory(ELogVerbosity::Type LogVerbosity)
+{
+	return static_cast<EELLogVerbosity>(LogVerbosity);
+}

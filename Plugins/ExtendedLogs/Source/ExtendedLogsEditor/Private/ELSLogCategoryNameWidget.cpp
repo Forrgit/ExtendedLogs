@@ -35,7 +35,7 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 			.AutoWidth()
 			[
 				SAssignNew(CheckBoxUseFilter, SCheckBox)
-				.IsChecked(UELExtendedLogsSettings::Get().bUseLogCategoryWidgetFilterByDefault ? ECheckBoxState::Checked : ECheckBoxState::Unchecked)
+				.IsChecked(ECheckBoxState::Checked)
 				.OnCheckStateChanged_Raw(this, &SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged)
 				.ToolTipText(useFilterTooltip)
 			]
@@ -87,23 +87,8 @@ void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 
 		for (const auto& logCategory : logManager->GetLogCategoriesNames())
 		{
-			bool bMustAdd = true;
-			if (bUseFilter)
-			{
-				const auto& settings = UELExtendedLogsSettings::Get();
-				if (settings.bUseLogCategoryWidgetRegularExpression)
-				{
-					const FRegexPattern filterRegexPattern(UELExtendedLogsSettings::Get().LogCategoryWidgetRegularExpression);
-					FRegexMatcher matcher(filterRegexPattern, logCategory.ToString());
-					bMustAdd = matcher.FindNext();
-				}
-				else
-				{
-					bMustAdd = settings.LogCategoryWidgetFilter.IsEmpty() || logCategory.ToString().Find(settings.LogCategoryWidgetFilter, ESearchCase::Type::IgnoreCase) >= 0;
-				}
-			}
-
-			if (bMustAdd)
+			const auto& settings = UELExtendedLogsSettings::Get();
+			if (!bUseFilter || settings.LogCategoryWidgetFilter.IsMatching(logCategory.ToString()))
 			{
 				GlobalOptionsSource.Add(MakeShareable(new FString(logCategory.ToString())));
 			}

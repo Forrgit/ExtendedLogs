@@ -5,7 +5,7 @@
 
 class SSearchableComboBox;
 
-class SELLogCategoryNameWidget : public SSearchableComboBox
+class EXTENDEDLOGSEDITOR_API SELLogCategoryNameWidget : public SSearchableComboBox
 {
 	using ListItemPtr = TSharedPtr<FString>;
 

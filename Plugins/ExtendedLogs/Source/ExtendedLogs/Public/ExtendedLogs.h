@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "ELOutputDeviceScreen.h"
+
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 #include "UObject/StrongObjectPtr.h"
@@ -23,4 +25,6 @@ public:
 
 private:
 	TStrongObjectPtr<UELLogManager> LogManager;
+
+	TUniquePtr<FELOutputDeviceScreen> OutputDeviceScreen;
 };

@@ -15,5 +15,5 @@ public:
 	FName CategoryName;
 
 	UPROPERTY(EditAnywhere)
-	EELLogVerbosity Verbosity;
+	EELLogVerbosity Verbosity = EELLogVerbosity::Log;
 };

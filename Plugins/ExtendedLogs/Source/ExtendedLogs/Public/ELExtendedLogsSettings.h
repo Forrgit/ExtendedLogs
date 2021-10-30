@@ -5,6 +5,47 @@
 
 #include "ELExtendedLogsSettings.generated.h"
 
+USTRUCT(BlueprintType)
+struct EXTENDEDLOGS_API FELPrintToScreenLogData
+{
+	GENERATED_BODY()
+public:
+	FELPrintToScreenLogData() = default;
+
+	FELPrintToScreenLogData(bool bInPrintToScreen, float InScreenTime, FColor InScreenColor);
+
+public:
+	UPROPERTY(EditAnywhere)
+	bool bPrintToScreen = true;
+
+	UPROPERTY(EditAnywhere)
+	float ScreenTime = 10.f;
+
+	UPROPERTY(EditAnywhere)
+	FColor ScreenColor = FColor(127, 127, 127);
+};
+
+USTRUCT(BlueprintType)
+struct EXTENDEDLOGS_API FELStringFilter
+{
+	GENERATED_BODY()
+public:
+	bool IsMatching(const FString& String) const;
+
+public:
+	/*
+	*A String filter(search by substring) to check for a matching
+	*/
+	UPROPERTY(EditAnywhere)
+	FString Filter;
+
+	/*
+	 *If true, it replaces string filter(search by substring) to regular expression
+	 */
+	UPROPERTY(EditAnywhere)
+	bool bUseFilterAsRegularExpression = false;
+};
+
 UCLASS(config = Engine, defaultconfig)
 class EXTENDEDLOGS_API UELExtendedLogsSettings : public UDeveloperSettings
 {
@@ -22,30 +63,30 @@ public:
 	}
 
 public:
-	/*
-	 * Regular expression that is used to filter the categories of logs in the UELBlueprintFunctionLibrary::UE_LOG function
-	 */
-	UPROPERTY(EditAnywhere, Config)
-	FString LogCategoryWidgetFilter;
-
-	/*
-	 * If true, use @LogCategoryWidgetFilter filter by default in the UELBlueprintFunctionLibrary::UE_LOG function
-	 */
-	UPROPERTY(EditAnywhere, Config)
-	bool bUseLogCategoryWidgetFilterByDefault;
-
-	UPROPERTY(EditAnywhere, Config)
+	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	TArray<FELDeclarationLogCategoryInfo> DeclaredLogCategories;
 
 	/*
-	 * If @bUseLogCategoryWidgetRegularExpression true, it replaces @LogCategoryWidgetFilter string filter
-	 */
-	UPROPERTY(EditAnywhere, Config, AdvancedDisplay)
-	FString LogCategoryWidgetRegularExpression;
+	* Only log categories matching the filter will be displayed in log category name widget(in details panel or node pin)
+	*/
+	UPROPERTY(EditAnywhere, Config, Category = "Editor widgets")
+	FELStringFilter LogCategoryWidgetFilter;
 
 	/*
-	* If true, use @LogCategoryWidgetRegularExpression instead @LogCategoryWidgetFilter string filter
+	* If true, display selected verbosity from @PrintLogsToScreenVerbosityMap to screen
 	*/
-	UPROPERTY(EditAnywhere, Config, AdvancedDisplay)
-	bool bUseLogCategoryWidgetRegularExpression;
+	UPROPERTY(EditAnywhere, Config, Category = "Screen Logs")
+	bool bPrintLogsToScreen = true;
+
+	/*
+	* These categories of logs will be displayed to screen
+	*/
+	UPROPERTY(EditAnywhere, Config, Category = "Screen Logs", meta = (EditCondition = "bPrintLogsToScreen"))
+	TMap<EELLogVerbosity, FELPrintToScreenLogData> PrintLogsToScreenVerbosityMap;
+
+	/*
+	* Only log categories matching the filter will be displayed on the screen
+	*/
+	UPROPERTY(EditAnywhere, Config, Category = "Screen Logs")
+	FELStringFilter ScreenLogCategoriesFilter;
 };
