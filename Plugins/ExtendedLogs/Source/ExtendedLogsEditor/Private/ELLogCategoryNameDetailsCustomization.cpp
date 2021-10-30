@@ -5,14 +5,6 @@
 
 #include "DetailWidgetRow.h"
 
-FELLogCategoryNameCustomization::~FELLogCategoryNameCustomization()
-{
-	if (LogCategoryWidget.IsValid())
-	{
-		LogCategoryWidget->GetOnSelectionChanged().Unbind();
-	}
-}
-
 TSharedRef<IPropertyTypeCustomization> FELLogCategoryNameCustomization::MakeInstance()
 {
 	return MakeShareable(new FELLogCategoryNameCustomization());
@@ -41,7 +33,7 @@ void FELLogCategoryNameCustomization::CustomizeHeader(TSharedRef<IPropertyHandle
 	[
 		SAssignNew(LogCategoryWidget, SELLogCategoryNameWidget)
 		.InitialItem(nameValue)
-		.OnSelectionChanged_Raw(this, &FELLogCategoryNameCustomization::OnNameValueChanged)
+		.OnSelectionChanged(this, &FELLogCategoryNameCustomization::OnNameValueChanged)
 	];
 	// clang-format on
 }

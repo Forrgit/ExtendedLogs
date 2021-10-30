@@ -7,8 +7,6 @@ class SELLogCategoryNameWidget;
 class FELLogCategoryNameCustomization : public IPropertyTypeCustomization
 {
 public:
-	virtual ~FELLogCategoryNameCustomization() override;
-
 	static TSharedRef<IPropertyTypeCustomization> MakeInstance();
 
 	virtual void CustomizeHeader(TSharedRef<IPropertyHandle> PropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& CustomizationUtils) override;
