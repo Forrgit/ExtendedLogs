@@ -88,9 +88,7 @@ const TMultiMap<FName, FLogCategoryBase*>& UELLogManager::GetRawLogCategories() 
 
 void UELLogManager::RegisterLogs()
 {
-	auto& settings = UELExtendedLogsSettings::Get();
-
-	for (auto& logCategory : settings.DeclaredLogCategories)
+	for (auto& logCategory : UELExtendedLogsSettings::Get()->DeclaredLogCategories)
 	{
 		DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.CategoryName, ConvertLogCategory(logCategory.Verbosity), ELogVerbosity::All)));
 	}

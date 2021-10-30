@@ -81,14 +81,14 @@ void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 {
 	GlobalOptionsSource.Empty();
 
-	if (const auto logManager = FExtendedLogsModule::Get().GetLogManager())
+	if (const auto logManager = FExtendedLogsModule::GetLogManager())
 	{
 		const bool bUseFilter = CheckBoxUseFilter->IsChecked();
 
 		for (const auto& logCategory : logManager->GetLogCategoriesNames())
 		{
-			const auto& settings = UELExtendedLogsSettings::Get();
-			if (!bUseFilter || settings.LogCategoryWidgetFilter.IsMatching(logCategory.ToString()))
+			const auto settings = UELExtendedLogsSettings::Get();
+			if (!bUseFilter || settings->LogCategoryWidgetFilter.IsMatching(logCategory.ToString()))
 			{
 				GlobalOptionsSource.Add(MakeShareable(new FString(logCategory.ToString())));
 			}

@@ -46,6 +46,15 @@ public:
 	bool bUseFilterAsRegularExpression = false;
 };
 
+USTRUCT()
+struct EXTENDEDLOGS_API FELLogVerbositySelector
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere)
+	EELLogVerbosity LogVerbosity = EELLogVerbosity::Log;
+};
+
 UCLASS(config = Engine, defaultconfig)
 class EXTENDEDLOGS_API UELExtendedLogsSettings : public UDeveloperSettings
 {
@@ -57,12 +66,15 @@ public:
 	virtual FText GetSectionText() const override;
 #endif //WITH_EDITOR
 
-	static const UELExtendedLogsSettings& Get()
+	static const UELExtendedLogsSettings* Get()
 	{
-		return *GetDefault<UELExtendedLogsSettings>();
+		return GetDefault<UELExtendedLogsSettings>();
 	}
 
 public:
+	UPROPERTY(EditAnywhere)
+	FELLogVerbositySelector LogVerbositySelector;
+
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	TArray<FELDeclarationLogCategoryInfo> DeclaredLogCategories;
 

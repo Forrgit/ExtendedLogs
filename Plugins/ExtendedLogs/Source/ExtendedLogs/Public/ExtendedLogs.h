@@ -2,13 +2,12 @@
 
 #pragma once
 
-#include "ELOutputDeviceScreen.h"
-
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 #include "UObject/StrongObjectPtr.h"
 
 class UELLogManager;
+class FELOutputDeviceScreen;
 
 /**
 * The public interface to this module
@@ -19,12 +18,10 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	static FExtendedLogsModule& Get();
-
-	UELLogManager* GetLogManager() const;
+	static UELLogManager* GetLogManager();
 
 private:
 	TStrongObjectPtr<UELLogManager> LogManager;
 
-	TUniquePtr<FELOutputDeviceScreen> OutputDeviceScreen;
+	TSharedPtr<FELOutputDeviceScreen> OutputDeviceScreen;
 };

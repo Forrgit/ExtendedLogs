@@ -14,7 +14,7 @@ void FExtendedLogsModule::StartupModule()
 	LogManager.Reset(NewObject<UELLogManager>());
 	LogManager->InitializeManager();
 
-	OutputDeviceScreen = MakeUnique<FELOutputDeviceScreen>();
+	OutputDeviceScreen = MakeShared<FELOutputDeviceScreen>();
 
 	if (GLog != nullptr)
 	{
@@ -30,14 +30,14 @@ void FExtendedLogsModule::ShutdownModule()
 	{
 		GLog->RemoveOutputDevice(OutputDeviceScreen.Get());
 	}
+	OutputDeviceScreen.Reset();
 }
 
-FExtendedLogsModule& FExtendedLogsModule::Get()
+UELLogManager* FExtendedLogsModule::GetLogManager()
 {
-	return FModuleManager::LoadModuleChecked<FExtendedLogsModule>("ExtendedLogs");
-}
-
-UELLogManager* FExtendedLogsModule::GetLogManager() const
-{
-	return LogManager.Get();
+	if (const auto module = FModuleManager::LoadModulePtr<FExtendedLogsModule>("ExtendedLogs"))
+	{
+		return module->LogManager.Get();
+	}
+	return nullptr;
 }

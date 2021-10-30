@@ -7,8 +7,7 @@
 
 void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity)
 {
-	auto& logsModule = FExtendedLogsModule::Get();
-	const auto logManager = logsModule.GetLogManager();
+	const auto logManager = FExtendedLogsModule::GetLogManager();
 	if (logManager == nullptr || logManager->IsSuppressedLogCategory(LogCategoryName.Name, ConvertLogCategory(LogVerbosity)))
 	{
 		return;
