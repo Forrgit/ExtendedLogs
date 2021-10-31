@@ -46,6 +46,10 @@ public:
 void UELLogManager::InitializeManager()
 {
 	RegisterLogs();
+
+#if WITH_EDITOR
+	GetMutableDefault<UELExtendedLogsSettings>()->OnSettingChanged().AddUObject(this, &UELLogManager::OnPluginSettingsChanged);
+#endif
 }
 
 TArray<FLogCategoryBase*> UELLogManager::FindLogCategory(FName LogCategoryName) const
@@ -75,6 +79,17 @@ TArray<FName> UELLogManager::GetLogCategoriesNames() const
 	return categories;
 }
 
+#if WITH_EDITOR
+void UELLogManager::OnPluginSettingsChanged(UObject*, FPropertyChangedEvent& PropertyChangedEvent)
+{
+	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(UELExtendedLogsSettings, DeclaredLogCategories))
+	{
+		DeclaredLogCategories.Empty();
+		RegisterLogs();
+	}
+}
+#endif
+
 const TMultiMap<FName, FLogCategoryBase*>& UELLogManager::GetRawLogCategories() const
 {
 	auto& logInterface = FLogSuppressionInterface::Get();
@@ -90,6 +105,13 @@ void UELLogManager::RegisterLogs()
 {
 	for (auto& logCategory : UELExtendedLogsSettings::Get()->DeclaredLogCategories)
 	{
-		DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.Key, ConvertLogCategory(logCategory.Value), ELogVerbosity::All)));
+		if (logCategory.Key != NAME_None)
+		{
+			DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.Key, ConvertLogCategory(logCategory.Value), ELogVerbosity::All)));
+		}
 	}
+
+#if WITH_EDITOR
+	OnRegisterLogsEvent.Broadcast();
+#endif
 }

@@ -70,6 +70,11 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 			RefreshOptions();
 		}
 	}
+
+	if (const auto logManager = FExtendedLogsModule::GetLogManager())
+	{
+		logManager->OnRegisterLogsEvent.AddSP(this, &SELLogCategoryNameWidget::OnPluginSettingsChanged);
+	}
 }
 
 SELLogCategoryNameWidget::FOnSelectionChangedDelegate& SELLogCategoryNameWidget::GetOnSelectionChanged()
@@ -94,6 +99,10 @@ void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 			}
 		}
 	}
+
+	GlobalOptionsSource.Sort([](auto& Lhs, auto& Rhs) {
+		return *Lhs < *Rhs;
+	});
 
 	RefreshOptions();
 }
@@ -121,6 +130,11 @@ void SELLogCategoryNameWidget::OnListSelectionChanged(ListItemPtr InItem, ESelec
 }
 
 void SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged(ECheckBoxState State)
+{
+	RefreshGlobalOptionSource();
+}
+
+void SELLogCategoryNameWidget::OnPluginSettingsChanged()
 {
 	RefreshGlobalOptionSource();
 }

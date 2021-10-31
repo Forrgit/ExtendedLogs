@@ -40,6 +40,8 @@ protected:
 
 	void OnCheckBoxUseFilterStateChanged(ECheckBoxState State);
 
+	void OnPluginSettingsChanged();
+
 private:
 	FOnSelectionChangedDelegate OnSelectionChanged;
 

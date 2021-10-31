@@ -16,9 +16,17 @@ public:
 
 	TArray<FName> GetLogCategoriesNames() const;
 
-protected:
-	const TMultiMap<FName, FLogCategoryBase*>& GetRawLogCategories() const;
+#if WITH_EDITOR
+	DECLARE_EVENT(UELLogManager, FOnRegisterLogsEvent);
+	FOnRegisterLogsEvent OnRegisterLogsEvent;
+#endif
 
+protected:
+#if WITH_EDITOR
+	void OnPluginSettingsChanged(UObject*, struct FPropertyChangedEvent& PropertyChangedEvent);
+#endif
+
+	const TMultiMap<FName, FLogCategoryBase*>& GetRawLogCategories() const;
 	void RegisterLogs();
 
 private:

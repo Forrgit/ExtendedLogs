@@ -73,16 +73,16 @@ void FELLogVerbosityCustomization::OnLogCategoryChanged(const FString& Category)
 
 void FELLogVerbosityCustomization::OnLogVerbosityChanged()
 {
-	static const FString defaultEnginePath = FString::Printf(TEXT("%s/DefaultEngine.ini"), *FPaths::SourceConfigDir());
+	static const FString configFilePath = UELExtendedLogsSettings::Get()->GetDefaultConfigFilename();
 
 	if (LogCategoryName != NAME_None)
 	{
-		auto settings = const_cast<UELExtendedLogsSettings*>(UELExtendedLogsSettings::Get());
+		auto settings = GetMutableDefault<UELExtendedLogsSettings>();
 
 		if (const auto declaredLogCategory = settings->DeclaredLogCategories.Find(LogCategoryName))
 		{
 			*declaredLogCategory = GetLogVerbosityPropertyValue();
-			settings->SaveConfig();
+			settings->SaveConfig(CPF_Config, *configFilePath);
 		}
 		else
 		{
@@ -95,7 +95,7 @@ void FELLogVerbosityCustomization::OnLogVerbosityChanged()
 			FString stringEnumValue = enumClass->GetNameStringByValue(static_cast<int32>(GetLogVerbosityPropertyValue()));
 			stringEnumValue.RemoveFromStart(enumClass->CppType + TEXT("::"));
 
-			GConfig->SetString(*ConfigLogSection, *LogCategoryName.ToString(), *stringEnumValue, defaultEnginePath);
+			GConfig->SetString(*ConfigLogSection, *LogCategoryName.ToString(), *stringEnumValue, settings->GetDefaultConfigFilename());
 
 			//Update runtime data in logs
 			const auto logManager = FExtendedLogsModule::GetLogManager();
@@ -105,6 +105,6 @@ void FELLogVerbosityCustomization::OnLogVerbosityChanged()
 			}
 		}
 
-		GConfig->Flush(false, defaultEnginePath);
+		GConfig->Flush(false, configFilePath);
 	}
 }
