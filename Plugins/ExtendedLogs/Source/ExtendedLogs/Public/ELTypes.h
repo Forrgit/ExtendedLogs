@@ -10,6 +10,12 @@ struct EXTENDEDLOGS_API FELLogCategoryName
 {
 	GENERATED_BODY()
 public:
+	bool IsValid() const
+	{
+		return Name != NAME_None;
+	}
+
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName Name;
 };

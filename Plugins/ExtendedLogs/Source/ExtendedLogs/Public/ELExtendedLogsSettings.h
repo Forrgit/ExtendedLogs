@@ -79,6 +79,15 @@ public:
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	TMap<FName, EELLogVerbosity> DeclaredLogCategories;
 
+	UPROPERTY(EditAnywhere, Config, Category = "Logs")
+	bool bAllowBPLogsOutputToEmptyCategories = true;
+
+	UPROPERTY(EditAnywhere, Config, Category = "Logs")
+	bool bWarnIfLogCategoryIsEmpty = true;
+
+	UPROPERTY(EditAnywhere, Config, Category = "Logs")
+	bool bWarnIfLogCategoryInvalid = true;
+
 	/*
 	* Only log categories matching the filter will be displayed in log category name widget(in details panel or node pin)
 	*/

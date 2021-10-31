@@ -2,9 +2,9 @@
 
 namespace UnrealBuildTool.Rules
 {
-	public class ExtendedLogsEditor : ModuleRules
+	public class ExtendedLogsDeveloper : ModuleRules
 	{
-		public ExtendedLogsEditor(ReadOnlyTargetRules Target) : base(Target)
+		public ExtendedLogsDeveloper(ReadOnlyTargetRules Target) : base(Target)
 		{
 			PCHUsage = ModuleRules.PCHUsageMode.NoPCHs;
 			bUseUnity = false;
@@ -14,19 +14,20 @@ namespace UnrealBuildTool.Rules
 					"Core",
 					"CoreUObject",
 					"Engine",
-					"SlateCore",
-					"Slate",
-					"InputCore",
-					"GraphEditor",
 					"BlueprintGraph",
-					"UnrealEd",
-					"EditorWidgets",
-					"PropertyEditor",
 					
-					"ExtendedLogsDeveloper",
 					"ExtendedLogs"
 				}
 			);
+			
+			if (Target.bBuildEditor)
+			{
+				PublicDependencyModuleNames.AddRange(
+					new string[] {
+						"UnrealEd"
+					}
+				);
+			}
 		}
 	}
 }
