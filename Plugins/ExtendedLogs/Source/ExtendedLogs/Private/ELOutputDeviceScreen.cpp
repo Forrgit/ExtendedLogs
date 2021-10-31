@@ -4,18 +4,47 @@
 
 #include "Engine/Engine.h"
 
+#if WITH_EDITOR
+#include "Editor.h"
+#endif
+
+FELOutputDeviceScreen::FELOutputDeviceScreen()
+    : FOutputDevice()
+{
+#if WITH_EDITOR
+	FEditorDelegates::EndPIE.AddLambda([this](bool) {
+		if (UELExtendedLogsSettings::Get()->bClearScreenLogsOnEndPIE)
+		{
+			GEngine->ClearOnScreenDebugMessages();
+		}
+	});
+#endif
+}
+
+FELOutputDeviceScreen::~FELOutputDeviceScreen()
+{
+#if WITH_EDITOR
+	FEditorDelegates::EndPIE.RemoveAll(this);
+#endif
+}
+
 void FELOutputDeviceScreen::Serialize(const TCHAR* V, ELogVerbosity::Type Verbosity, const FName& Category)
 {
-	if (const auto settings = UELExtendedLogsSettings::Get())
+#if WITH_EDITOR
+	if (GEditor != nullptr && !GEditor->IsPlayingSessionInEditor())
 	{
-		if (settings->bPrintLogsToScreen)
-		{
-			const auto printToScreenData = settings->PrintLogsToScreenVerbosityMap.Find(ConvertLogCategory(Verbosity));
+		return;
+	}
+#endif
 
-			if (printToScreenData != nullptr && printToScreenData->bPrintToScreen && settings->ScreenLogCategoriesFilter.IsMatching(Category.ToString()))
-			{
-				GEngine->AddOnScreenDebugMessage(-1, printToScreenData->ScreenTime, printToScreenData->ScreenColor, V);
-			}
+	const auto settings = Cast<UELExtendedLogsSettings>(UELExtendedLogsSettings::StaticClass()->GetDefaultObject(false));
+	if (settings != nullptr && settings->bPrintLogsToScreen)
+	{
+		const auto printToScreenData = settings->PrintLogsToScreenVerbosityMap.Find(ConvertLogCategory(Verbosity));
+
+		if (printToScreenData != nullptr && printToScreenData->bPrintToScreen && settings->ScreenLogCategoriesFilter.IsMatching(Category.ToString()))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, printToScreenData->ScreenTime, printToScreenData->ScreenColor, V);
 		}
 	}
 }
