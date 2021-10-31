@@ -90,6 +90,6 @@ void UELLogManager::RegisterLogs()
 {
 	for (auto& logCategory : UELExtendedLogsSettings::Get()->DeclaredLogCategories)
 	{
-		DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.CategoryName, ConvertLogCategory(logCategory.Verbosity), ELogVerbosity::All)));
+		DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.Key, ConvertLogCategory(logCategory.Value), ELogVerbosity::All)));
 	}
 }

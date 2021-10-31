@@ -28,6 +28,22 @@ UELExtendedLogsSettings::UELExtendedLogsSettings()
 	PrintLogsToScreenVerbosityMap.Add(EELLogVerbosity::Warning, FELPrintToScreenLogData(true, 10.f, FColor::Yellow));
 }
 
+void UELExtendedLogsSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(UELExtendedLogsSettings, DeclaredLogCategories))
+	{
+		if (PropertyChangedEvent.ChangeType == EPropertyChangeType::ArrayAdd)
+		{
+			if (auto newVerbosity = DeclaredLogCategories.Find(NAME_None))
+			{
+				*newVerbosity = EELLogVerbosity::Log;
+			}
+		}
+	}
+}
+
 #if WITH_EDITOR
 FText UELExtendedLogsSettings::GetSectionText() const
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ELDeclarationLogCategoryInfo.h"
+#include "ELTypes.h"
 #include "Engine/DeveloperSettings.h"
 
 #include "ELExtendedLogsSettings.generated.h"
@@ -63,6 +63,7 @@ public:
 	UELExtendedLogsSettings();
 
 #if WITH_EDITOR
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual FText GetSectionText() const override;
 #endif //WITH_EDITOR
 
@@ -76,7 +77,7 @@ public:
 	FELLogVerbositySelector LogVerbositySelector;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
-	TArray<FELDeclarationLogCategoryInfo> DeclaredLogCategories;
+	TMap<FName, EELLogVerbosity> DeclaredLogCategories;
 
 	/*
 	* Only log categories matching the filter will be displayed in log category name widget(in details panel or node pin)

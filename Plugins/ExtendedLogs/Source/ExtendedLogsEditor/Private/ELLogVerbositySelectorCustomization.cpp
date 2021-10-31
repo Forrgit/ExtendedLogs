@@ -73,26 +73,38 @@ void FELLogVerbosityCustomization::OnLogCategoryChanged(const FString& Category)
 
 void FELLogVerbosityCustomization::OnLogVerbosityChanged()
 {
+	static const FString defaultEnginePath = FString::Printf(TEXT("%s/DefaultEngine.ini"), *FPaths::SourceConfigDir());
+
 	if (LogCategoryName != NAME_None)
 	{
-		//Update ini file
-		static const FString defaultEnginePath = FString::Printf(TEXT("%s/DefaultEngine.ini"), *FPaths::SourceConfigDir());
+		auto settings = const_cast<UELExtendedLogsSettings*>(UELExtendedLogsSettings::Get());
 
-		UEnum* enumClass = StaticEnum<EELLogVerbosity>();
-		check(enumClass != nullptr);
-		check(enumClass->GetCppForm() == UEnum::ECppForm::EnumClass);
-
-		FString stringEnumValue = enumClass->GetNameStringByValue(static_cast<int32>(GetLogVerbosityPropertyValue()));
-		stringEnumValue.RemoveFromStart(enumClass->CppType + TEXT("::"));
-
-		GConfig->SetString(*ConfigLogSection, *LogCategoryName.ToString(), *stringEnumValue, defaultEnginePath);
-		GConfig->Flush(false, defaultEnginePath);
-
-		//Update runtime data in logs
-		const auto logManager = FExtendedLogsModule::GetLogManager();
-		for (auto& logCategory : logManager->FindLogCategory(LogCategoryName))
+		if (const auto declaredLogCategory = settings->DeclaredLogCategories.Find(LogCategoryName))
 		{
-			logCategory->SetVerbosity(ConvertLogCategory(GetLogVerbosityPropertyValue()));
+			*declaredLogCategory = GetLogVerbosityPropertyValue();
+			settings->SaveConfig();
 		}
+		else
+		{
+			//Update ini file
+
+			UEnum* enumClass = StaticEnum<EELLogVerbosity>();
+			check(enumClass != nullptr);
+			check(enumClass->GetCppForm() == UEnum::ECppForm::EnumClass);
+
+			FString stringEnumValue = enumClass->GetNameStringByValue(static_cast<int32>(GetLogVerbosityPropertyValue()));
+			stringEnumValue.RemoveFromStart(enumClass->CppType + TEXT("::"));
+
+			GConfig->SetString(*ConfigLogSection, *LogCategoryName.ToString(), *stringEnumValue, defaultEnginePath);
+
+			//Update runtime data in logs
+			const auto logManager = FExtendedLogsModule::GetLogManager();
+			for (auto& logCategory : logManager->FindLogCategory(LogCategoryName))
+			{
+				logCategory->SetVerbosity(ConvertLogCategory(GetLogVerbosityPropertyValue()));
+			}
+		}
+
+		GConfig->Flush(false, defaultEnginePath);
 	}
 }
