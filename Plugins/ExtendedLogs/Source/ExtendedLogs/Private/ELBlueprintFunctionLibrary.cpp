@@ -24,5 +24,7 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	}
 #endif
 
+	FFrame::KismetExecutionMessage(TEXT("Invalid WorldContextObject. Cannot execute MiniTimer."), ELogVerbosity::Error);
+
 	FMsg::Logf(nullptr, 0, LogCategoryName.Name, ConvertLogCategory(LogVerbosity), TEXT("%s [%s]"), *Message, *logSuffix);
 }

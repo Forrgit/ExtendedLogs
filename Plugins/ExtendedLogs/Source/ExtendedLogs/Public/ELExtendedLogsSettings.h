@@ -101,4 +101,7 @@ public:
 	*/
 	UPROPERTY(EditAnywhere, Config, Category = "Screen Logs")
 	FELStringFilter ScreenLogCategoriesFilter;
+
+	UPROPERTY(EditAnywhere, Config, Category = "Screen Logs", AdvancedDisplay)
+	bool bClearScreenLogsOnEndPIE = true;
 };

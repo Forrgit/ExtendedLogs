@@ -17,6 +17,15 @@ namespace UnrealBuildTool.Rules
 				"DeveloperSettings"
 			}
 			);
+
+			if (Target.bBuildEditor)
+			{
+				PublicDependencyModuleNames.AddRange(
+					new string[] {
+						"UnrealEd"
+					}
+				);
+			}
 		}
 	}
 }
