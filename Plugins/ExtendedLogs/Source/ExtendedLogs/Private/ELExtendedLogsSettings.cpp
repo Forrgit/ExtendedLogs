@@ -28,6 +28,8 @@ UELExtendedLogsSettings::UELExtendedLogsSettings()
 	PrintLogsToScreenVerbosityMap.Add(EELLogVerbosity::Warning, FELPrintToScreenLogData(true, 10.f, FColor::Yellow));
 }
 
+#if WITH_EDITOR
+
 void UELExtendedLogsSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -44,9 +46,9 @@ void UELExtendedLogsSettings::PostEditChangeProperty(FPropertyChangedEvent& Prop
 	}
 }
 
-#if WITH_EDITOR
 FText UELExtendedLogsSettings::GetSectionText() const
 {
 	return FText::FromName(SectionName);
 }
+
 #endif //WITH_EDITOR
