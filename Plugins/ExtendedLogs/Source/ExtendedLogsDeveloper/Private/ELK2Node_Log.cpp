@@ -15,6 +15,11 @@
 void UELK2Node_Log::AllocateDefaultPins()
 {
 	Super::AllocateDefaultPins();
+
+	if (TmpDefaultLogCategoryName.IsValid())
+	{
+		ELKismetUtilities::SetLogCategoryNamePinDefaultValue(GetLogCategoryPin(), TmpDefaultLogCategoryName);
+	}
 }
 
 FText UELK2Node_Log::GetNodeTitle(ENodeTitleType::Type TitleType) const
@@ -52,10 +57,8 @@ void UELK2Node_Log::ValidateNodeDuringCompilation(FCompilerResultsLog& MessageLo
 
 	if (UELExtendedLogsSettings::Get()->bWarnIfLogCategoryIsEmpty)
 	{
-		UEdGraphPin* logCategoryNamePin = FindPinChecked(TEXT("LogCategoryName"));
-
 		FELLogCategoryName logCategoryName;
-		ELKismetUtilities::GetLogCategoryNamePinDefaultValue(logCategoryNamePin, logCategoryName);
+		ELKismetUtilities::GetLogCategoryNamePinDefaultValue(GetLogCategoryPin(), logCategoryName);
 
 		const auto settings = UELExtendedLogsSettings::Get();
 
@@ -70,18 +73,14 @@ void UELK2Node_Log::ValidateNodeDuringCompilation(FCompilerResultsLog& MessageLo
 	}
 }
 
-FBlueprintNodeSignature UELK2Node_Log::GetSignature() const
+UEdGraphPin* UELK2Node_Log::GetLogCategoryPin() const
 {
-	return Super::GetSignature();
-
-	// FBlueprintNodeSignature NodeSignature = Super::GetSignature();
-	// NodeSignature.AddKeyValue(LogCategoryName.Name.ToString());
-
-	//	return NodeSignature;
+	return FindPinChecked(TEXT("LogCategoryName"));
 }
 
 void UELK2Node_Log::InitializeNode()
 {
+	TmpDefaultLogCategoryName = UELExtendedLogsSettings::Get()->FunctionDefaultLogCategory;
 	SetFromFunction(UELBlueprintFunctionLibrary::StaticClass()->FindFunctionByName(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, Log)));
 }
 

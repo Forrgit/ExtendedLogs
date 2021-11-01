@@ -10,6 +10,12 @@ struct EXTENDEDLOGS_API FELLogCategoryName
 {
 	GENERATED_BODY()
 public:
+	FELLogCategoryName() = default;
+	FELLogCategoryName(FName InName)
+	    : Name(InName)
+	{
+	}
+
 	bool IsValid() const
 	{
 		return Name != NAME_None;

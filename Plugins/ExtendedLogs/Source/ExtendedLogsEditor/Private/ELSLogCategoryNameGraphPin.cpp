@@ -1,5 +1,6 @@
 #include "ELSLogCategoryNameGraphPin.h"
 
+#include "ELKismetUtilities.h"
 #include "ELSLogCategoryNameWidget.h"
 #include "ELTypes.h"
 
@@ -10,41 +11,16 @@ void SELLogCategoryNameGraphPin::Construct(const FArguments& InArgs, UEdGraphPin
 
 TSharedRef<SWidget> SELLogCategoryNameGraphPin::GetDefaultValueWidget()
 {
+	FELLogCategoryName defaultLogCategoryName;
+	ELKismetUtilities::GetLogCategoryNamePinDefaultValue(GraphPinObj, defaultLogCategoryName);
 	// clang-format off
 	return SNew(SELLogCategoryNameWidget)
-		.InitialItem(*GetParsedPinDefaultValue())
+		.InitialItem(defaultLogCategoryName.Name)
 		.OnSelectionChanged_Raw(this, &SELLogCategoryNameGraphPin::OnSelectionChanged);
 	// clang-format on
 }
 
-FString SELLogCategoryNameGraphPin::GetParsedPinDefaultValue() const
-{
-	const auto pinDefaultValue = GraphPinObj->GetDefaultAsString();
-
-	FELLogCategoryName logCategory;
-
-	if (!pinDefaultValue.IsEmpty())
-	{
-		auto logCategoryStructType = FELLogCategoryName::StaticStruct();
-		logCategoryStructType->ImportText(*pinDefaultValue, &logCategory, nullptr, EPropertyPortFlags::PPF_SerializedAsImportText, GError, logCategoryStructType->GetName(), true);
-	}
-	return logCategory.Name.ToString();
-}
-
-void SELLogCategoryNameGraphPin::SetPinDefaultValue(const FString& Value)
-{
-	const FELLogCategoryName logCategory{ *Value };
-
-	FString exportLogCategory;
-	FELLogCategoryName::StaticStruct()->ExportText(exportLogCategory, &logCategory, &logCategory, nullptr, EPropertyFlags::CPF_None, nullptr);
-
-	if (GraphPinObj->GetDefaultAsString() != exportLogCategory)
-	{
-		GraphPinObj->GetSchema()->TrySetDefaultValue(*GraphPinObj, exportLogCategory);
-	}
-}
-
 void SELLogCategoryNameGraphPin::OnSelectionChanged(const FString& InItem)
 {
-	SetPinDefaultValue(InItem);
+	ELKismetUtilities::SetLogCategoryNamePinDefaultValue(GraphPinObj, FELLogCategoryName(*InItem));
 }

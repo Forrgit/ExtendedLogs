@@ -77,6 +77,9 @@ public:
 	FELLogVerbositySelector LogVerbositySelector;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
+	FELLogCategoryName FunctionDefaultLogCategory;
+
+	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	TMap<FName, EELLogVerbosity> DeclaredLogCategories;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
