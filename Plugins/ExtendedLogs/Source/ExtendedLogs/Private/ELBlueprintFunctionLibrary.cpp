@@ -1,5 +1,6 @@
 #include "ELBlueprintFunctionLibrary.h"
 
+#include "ELExtendedLogsSettings.h"
 #include "ELLogManager.h"
 
 #include "ExtendedLogs.h"
@@ -7,8 +8,13 @@
 
 void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity)
 {
+	const auto nativeLogVerbosity = ConvertLogCategory(LogVerbosity);
+
 	const auto logManager = FExtendedLogsModule::GetLogManager();
-	if (logManager == nullptr || logManager->IsSuppressedLogCategory(LogCategoryName.Name, ConvertLogCategory(LogVerbosity)))
+
+	if (logManager == nullptr
+	    || (LogCategoryName.IsValid() && logManager->IsSuppressedLogCategory(LogCategoryName.Name, nativeLogVerbosity))
+	    || (!UELExtendedLogsSettings::Get()->bAllowBPLogsOutputToEmptyOrInvalidCategories && logManager->FindLogCategory(LogCategoryName.Name).Num() == 0))
 	{
 		return;
 	}
@@ -20,11 +26,9 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	if (blueprintExceptionTracker != nullptr && blueprintExceptionTracker->GetScriptStack().Num() > 0)
 	{
 		const FFrame* lastFrame = blueprintExceptionTracker->GetScriptStack().Last();
-		logSuffix = GetNameSafe(lastFrame->Object);
+		logSuffix = lastFrame->GetStackDescription();
 	}
 #endif
 
-	FFrame::KismetExecutionMessage(TEXT("Invalid WorldContextObject. Cannot execute MiniTimer."), ELogVerbosity::Error);
-
-	FMsg::Logf(nullptr, 0, LogCategoryName.Name, ConvertLogCategory(LogVerbosity), TEXT("%s [%s]"), *Message, *logSuffix);
+	FMsg::Logf(nullptr, 0, LogCategoryName.Name, nativeLogVerbosity, TEXT("%s [%s]"), *Message, *logSuffix);
 }

@@ -83,7 +83,7 @@ public:
 	TMap<FName, EELLogVerbosity> DeclaredLogCategories;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
-	bool bAllowBPLogsOutputToEmptyCategories = true;
+	bool bAllowBPLogsOutputToEmptyOrInvalidCategories = true;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	bool bWarnIfLogCategoryIsEmpty = true;
