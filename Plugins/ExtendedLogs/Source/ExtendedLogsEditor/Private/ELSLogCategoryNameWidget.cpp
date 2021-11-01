@@ -61,14 +61,8 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 
 	if (InArgs._InitialItem != NAME_None)
 	{
-		const auto initialItemPtr = Algo::FindByPredicate(GlobalOptionsSource, [initialItem = InArgs._InitialItem.ToString()](ListItemPtr Item) {
-			return *Item == initialItem;
-		});
-		if (initialItemPtr != nullptr)
-		{
-			SetSelectedItem(*initialItemPtr);
-			RefreshOptions();
-		}
+		SetSelectedItem(FindItemInGlobalOptionSource(InArgs._InitialItem.ToString()));
+		RefreshOptions();
 	}
 
 	if (const auto logManager = FExtendedLogsModule::GetLogManager())
@@ -84,6 +78,8 @@ SELLogCategoryNameWidget::FOnSelectionChangedDelegate& SELLogCategoryNameWidget:
 
 void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 {
+	const auto selectedItemValue = GetSelectedItem().IsValid() ? *GetSelectedItem() : FString();
+
 	GlobalOptionsSource.Empty();
 
 	if (const auto logManager = FExtendedLogsModule::GetLogManager())
@@ -104,7 +100,18 @@ void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 		return *Lhs < *Rhs;
 	});
 
+	SetSelectedItem(FindItemInGlobalOptionSource(selectedItemValue));
+
 	RefreshOptions();
+}
+
+TSharedPtr<FString> SELLogCategoryNameWidget::FindItemInGlobalOptionSource(const FString& ItemValue) const
+{
+	const auto foundItem = Algo::FindByPredicate(GlobalOptionsSource, [itemValue = ItemValue](ListItemPtr Item) {
+		return *Item == itemValue;
+	});
+
+	return foundItem != nullptr ? *foundItem : nullptr;
 }
 
 FText SELLogCategoryNameWidget::GetCurrentSelection() const

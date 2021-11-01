@@ -33,6 +33,7 @@ public:
 
 protected:
 	virtual void RefreshGlobalOptionSource();
+	TSharedPtr<FString> FindItemInGlobalOptionSource(const FString& ItemValue) const;
 
 	FText GetCurrentSelection() const;
 	TSharedRef<SWidget> OnGenerateWidgetForList(ListItemPtr InItem) const;
