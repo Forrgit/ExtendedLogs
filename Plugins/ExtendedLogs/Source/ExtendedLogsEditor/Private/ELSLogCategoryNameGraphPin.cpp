@@ -14,9 +14,14 @@ TSharedRef<SWidget> SELLogCategoryNameGraphPin::GetDefaultValueWidget()
 	FELLogCategoryName defaultLogCategoryName;
 	ELKismetUtilities::GetLogCategoryNamePinDefaultValue(GraphPinObj, defaultLogCategoryName);
 	// clang-format off
-	return SNew(SELLogCategoryNameWidget)
-		.InitialItem(defaultLogCategoryName.Name)
-		.OnSelectionChanged_Raw(this, &SELLogCategoryNameGraphPin::OnSelectionChanged);
+	return SNew(SBox)
+			.WidthOverride(170)
+			[
+				SNew(SELLogCategoryNameWidget)
+				.InitialItem(defaultLogCategoryName.Name)
+				.OnSelectionChanged_Raw(this, &SELLogCategoryNameGraphPin::OnSelectionChanged)			
+			];
+
 	// clang-format on
 }
 
