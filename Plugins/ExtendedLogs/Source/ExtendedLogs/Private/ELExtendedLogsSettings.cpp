@@ -1,3 +1,5 @@
+// Copyright 2021 Alexander Shumeyko. All Rights Reserved.
+
 #include "ELExtendedLogsSettings.h"
 
 #include "Internationalization/Regex.h"

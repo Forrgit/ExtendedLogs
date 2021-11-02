@@ -1,3 +1,5 @@
+// Copyright 2021 Alexander Shumeyko. All Rights Reserved.
+
 #include "ELLogCategoryNameDetailsCustomization.h"
 
 #include "ELSLogCategoryNameWidget.h"

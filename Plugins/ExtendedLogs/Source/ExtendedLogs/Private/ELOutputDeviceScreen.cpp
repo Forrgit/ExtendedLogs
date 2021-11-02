@@ -1,3 +1,5 @@
+// Copyright 2021 Alexander Shumeyko. All Rights Reserved.
+
 #include "ELOutputDeviceScreen.h"
 
 #include "ELExtendedLogsSettings.h"

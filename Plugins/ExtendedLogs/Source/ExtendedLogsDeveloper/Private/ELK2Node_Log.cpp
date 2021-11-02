@@ -1,3 +1,5 @@
+// Copyright 2021 Alexander Shumeyko. All Rights Reserved.
+
 #include "ELK2Node_Log.h"
 
 #include "ELBlueprintFunctionLibrary.h"
