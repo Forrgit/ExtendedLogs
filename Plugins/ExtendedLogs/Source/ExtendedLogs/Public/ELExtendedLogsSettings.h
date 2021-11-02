@@ -75,18 +75,31 @@ public:
 	}
 
 public:
+	/*
+	 * This utility allows you to change the default verbosity of logs
+	 * (for declared logs in c++ in the DefaultEngine.ini, for plugins logs in @DeclaredLogCategories)
+	 */
 	UPROPERTY(EditAnywhere, Category = "Default log verbosity selector")
 	FELLogVerbositySelector LogVerbositySelector;
 
-	UPROPERTY(EditAnywhere, Config, Category = "Logs")
-	FELLogCategoryName FunctionDefaultLogCategory;
-
+	/*
+	 * Declaring log categories without using C ++ (same as DECLARE_LOG_CATEGORY_EXTERN in c++)
+	 * You can find more about the declaring logs in the official ue documentation
+	 */
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	TMap<FName, EELLogVerbosity> DeclaredLogCategories;
 
+	/*
+	* Allow empty log categories in plugin Log functions
+	* (otherwise blueprint with invalid Log function will display warning on compile)
+	*/
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	bool bAllowEmptyLogCategory = true;
 
+	/*
+	* Allow categories that were once declared but then removed in plugin Log functions
+	* (otherwise blueprint with invalid Log function will display warning on compile)
+	*/
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
 	bool bAllowInvalidLogCategory = true;
 
@@ -95,6 +108,12 @@ public:
 	*/
 	UPROPERTY(EditAnywhere, Config, Category = "Editor widgets")
 	FELStringFilter LogCategoryWidgetFilter;
+
+	/*
+	* Default logCategory to initialize plugins Log functions nodes on spawn
+	*/
+	UPROPERTY(EditAnywhere, Config, Category = "Editor widgets")
+	FELLogCategoryName FunctionDefaultLogCategory;
 
 	/*
 	* If true, display selected verbosity from @PrintLogsToScreenVerbosityMap to screen
