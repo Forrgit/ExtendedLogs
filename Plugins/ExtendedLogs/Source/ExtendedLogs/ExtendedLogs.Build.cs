@@ -6,8 +6,7 @@ namespace UnrealBuildTool.Rules
 	{
 		public ExtendedLogs(ReadOnlyTargetRules Target) : base(Target)
 		{
-			PCHUsage = ModuleRules.PCHUsageMode.NoPCHs;
-			bUseUnity = false;
+			PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 			
 			PublicDependencyModuleNames.AddRange(
 			new string[] {
