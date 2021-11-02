@@ -22,15 +22,19 @@
 			    "Type" : "Runtime",
 			    "LoadingPhase" : "Default",
 			    "WhitelistPlatforms" : [
-				    "Win64",
-				    "Win32",
+				    "Android",
+				    "HTML5",
+				    "IOS",
 				    "Linux",
+				    "Lumin",
 				    "Mac",
 				    "PS4",
-				    "XboxOne",
+				    "Quail",
 				    "Switch",
-				    "IOS",
-				    "Android"
+				    "TVOS",
+				    "Win32",
+				    "Win64",
+				    "XboxOne"
 			    ]
 		    },
 		    {
@@ -49,10 +53,19 @@
 			    "Type" : "UncookedOnly",
 			    "LoadingPhase" : "Default",
 			    "WhitelistPlatforms" : [
-				    "Win64",
-				    "Win32",
+				    "Android",
+				    "HTML5",
+				    "IOS",
 				    "Linux",
-				    "Mac"
+				    "Lumin",
+				    "Mac",
+				    "PS4",
+				    "Quail",
+				    "Switch",
+				    "TVOS",
+				    "Win32",
+				    "Win64",
+				    "XboxOne"
 			    ]
 		    }
 	    ]
