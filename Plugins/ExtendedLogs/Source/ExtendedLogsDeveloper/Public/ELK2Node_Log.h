@@ -28,8 +28,10 @@ public:
 	UEdGraphPin* GetLogCategoryPin() const;
 
 protected:
-	void InitializeNode();
+	virtual void InitializeNode(FName InNativeFunctionName);
 
 protected:
+	UPROPERTY()
+	FName NativeFunctionName;
 	FELLogCategoryName TmpDefaultLogCategoryName;
 };

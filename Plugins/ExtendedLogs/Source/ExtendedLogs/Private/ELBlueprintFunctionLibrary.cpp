@@ -43,3 +43,11 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 		}
 	}
 }
+
+void UELBlueprintFunctionLibrary::ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+{
+	if (bCondition)
+	{
+		UELBlueprintFunctionLibrary::Log(Message, LogCategoryName, LogVerbosity, WorldContextObject, bPrintToScreen, ScreenTextColor, ScreenDuration);
+	}
+}

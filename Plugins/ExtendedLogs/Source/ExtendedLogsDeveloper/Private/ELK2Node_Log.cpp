@@ -24,7 +24,7 @@ void UELK2Node_Log::AllocateDefaultPins()
 
 FText UELK2Node_Log::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return LOCTEXT("Title", "Log");
+	return FText::FromString(NativeFunctionName.ToString()); // LOCTEXT("Title", NativeFunctionName);
 }
 
 FText UELK2Node_Log::GetTooltipText() const
@@ -39,20 +39,27 @@ FLinearColor UELK2Node_Log::GetNodeTitleColor() const
 
 void UELK2Node_Log::GetMenuActions(FBlueprintActionDatabaseRegistrar& ActionRegistrar) const
 {
-	auto customizeNodeLambda = [](UEdGraphNode* NewNode, bool bIsTemplateNode) {
+	auto customizeNodeLambda = [](UEdGraphNode* NewNode, bool bIsTemplateNode, FName InNativeFunctionName) {
 		auto logNode = CastChecked<UELK2Node_Log>(NewNode);
-		logNode->InitializeNode();
+		logNode->InitializeNode(InNativeFunctionName);
 	};
 
 	UClass* ActionKey = GetClass();
 
 	if (ActionRegistrar.IsOpenForRegistration(ActionKey))
 	{
-		UBlueprintNodeSpawner* NodeSpawner = UBlueprintNodeSpawner::Create(GetClass());
-		check(NodeSpawner != nullptr);
+		static TArray<FName> nativeFunctionNames;
+		nativeFunctionNames.Add(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, Log));
+		nativeFunctionNames.Add(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, ConditionalLog));
 
-		NodeSpawner->CustomizeNodeDelegate = UBlueprintNodeSpawner::FCustomizeNodeDelegate::CreateStatic(customizeNodeLambda);
-		ActionRegistrar.AddBlueprintAction(ActionKey, NodeSpawner);
+		for (auto& nativeFunctionName : nativeFunctionNames)
+		{
+			UBlueprintNodeSpawner* NodeSpawner = UBlueprintNodeSpawner::Create(GetClass());
+			check(NodeSpawner != nullptr);
+
+			NodeSpawner->CustomizeNodeDelegate = UBlueprintNodeSpawner::FCustomizeNodeDelegate::CreateStatic(customizeNodeLambda, nativeFunctionName);
+			ActionRegistrar.AddBlueprintAction(ActionKey, NodeSpawner);
+		}
 	}
 }
 
@@ -83,10 +90,11 @@ UEdGraphPin* UELK2Node_Log::GetLogCategoryPin() const
 	return FindPinChecked(TEXT("LogCategoryName"));
 }
 
-void UELK2Node_Log::InitializeNode()
+void UELK2Node_Log::InitializeNode(FName InNativeFunctionName)
 {
 	TmpDefaultLogCategoryName = UELExtendedLogsSettings::Get()->FunctionDefaultLogCategory;
-	SetFromFunction(UELBlueprintFunctionLibrary::StaticClass()->FindFunctionByName(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, Log)));
+	NativeFunctionName = InNativeFunctionName;
+	SetFromFunction(UELBlueprintFunctionLibrary::StaticClass()->FindFunctionByName(InNativeFunctionName));
 }
 
 #undef LOCTEXT_NAMESPACE
