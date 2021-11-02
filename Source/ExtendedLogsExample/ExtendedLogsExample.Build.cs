@@ -8,7 +8,7 @@ public class ExtendedLogsExample : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ExtendedLogs" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
