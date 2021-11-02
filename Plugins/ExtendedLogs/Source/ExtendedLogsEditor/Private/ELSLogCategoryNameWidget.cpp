@@ -100,7 +100,10 @@ void SELLogCategoryNameWidget::RefreshGlobalOptionSource()
 		return *Lhs < *Rhs;
 	});
 
-	SetSelectedItem(FindItemInGlobalOptionSource(selectedItemValue));
+	if (FindItemInGlobalOptionSource(selectedItemValue).IsValid())
+	{
+		SetSelectedItem(FindItemInGlobalOptionSource(selectedItemValue));
+	}
 
 	RefreshOptions();
 }
