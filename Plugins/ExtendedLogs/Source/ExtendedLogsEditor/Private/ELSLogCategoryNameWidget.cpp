@@ -25,35 +25,38 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 		]);
 
 	TSharedRef<SWidget> newMenuContent =
-		SNew(SVerticalBox)
-		+SVerticalBox::Slot()
-		.AutoHeight()
+		SNew(SBox)
+		.WidthOverride(300.f)
 		[
-			SNew(SHorizontalBox)
-			+SHorizontalBox::Slot()
-			.HAlign(HAlign_Left)
-			.AutoWidth()
+			SNew(SVerticalBox)
+			+SVerticalBox::Slot()
+			.AutoHeight()
 			[
-				SAssignNew(CheckBoxUseFilter, SCheckBox)
-				.IsChecked(ECheckBoxState::Checked)
-				.OnCheckStateChanged_Raw(this, &SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged)
-				.ToolTipText(useFilterTooltip)
+				SNew(SHorizontalBox)
+				+SHorizontalBox::Slot()
+				.HAlign(HAlign_Left)
+				.AutoWidth()
+				[
+					SAssignNew(CheckBoxUseFilter, SCheckBox)
+					.IsChecked(ECheckBoxState::Checked)
+					.OnCheckStateChanged_Raw(this, &SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged)
+					.ToolTipText(useFilterTooltip)
+				]
+				+SHorizontalBox::Slot()
+				.HAlign(HAlign_Left)
+				.AutoWidth()
+				[
+					SNew(STextBlock)
+					.Text(FText::FromString(TEXT("Use default log category filter")))
+					.ToolTipText(useFilterTooltip)
+				]
+				
 			]
-			+SHorizontalBox::Slot()
-			.HAlign(HAlign_Left)
-			.AutoWidth()
+			+SVerticalBox::Slot()
 			[
-				SNew(STextBlock)
-				.Text(FText::FromString(TEXT("Use default log category filter")))
-				.ToolTipText(useFilterTooltip)
+				MenuContent.ToSharedRef()
 			]
-			
-		]
-		+SVerticalBox::Slot()
-		[
-			MenuContent.ToSharedRef()
 		];
-
 	// clang-format on
 
 	SetMenuContent(newMenuContent);
