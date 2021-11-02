@@ -23,6 +23,7 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 
 	FString callstackDescription;
 
+#if DO_BLUEPRINT_GUARD
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 26) || ENGINE_MAJOR_VERSION > 4
 	const FBlueprintContextTracker* blueprintExceptionTracker = FBlueprintContextTracker::TryGet();
 	if (blueprintExceptionTracker != nullptr && blueprintExceptionTracker->GetScriptStack().Num() > 0)
@@ -31,6 +32,8 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 		callstackDescription = lastFrame->GetStackDescription();
 	}
 #endif
+
+#endif //DO_BLUEPRINT_GUARD
 
 	if (!LogCategoryName.IsValid() && !settings->bAllowEmptyLogCategory)
 	{
