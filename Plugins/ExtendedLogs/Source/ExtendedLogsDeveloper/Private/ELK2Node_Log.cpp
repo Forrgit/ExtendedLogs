@@ -67,10 +67,12 @@ void UELK2Node_Log::ValidateNodeDuringCompilation(FCompilerResultsLog& MessageLo
 {
 	Super::ValidateNodeDuringCompilation(MessageLog);
 
-	if (UELExtendedLogsSettings::Get()->bWarnIfLogCategoryIsEmpty)
+	const auto logCategoryPin = GetLogCategoryPin();
+
+	if (!logCategoryPin->HasAnyConnections() && UELExtendedLogsSettings::Get()->bWarnIfLogCategoryIsEmpty)
 	{
 		FELLogCategoryName logCategoryName;
-		ELKismetUtilities::GetLogCategoryNamePinDefaultValue(GetLogCategoryPin(), logCategoryName);
+		ELKismetUtilities::GetLogCategoryNamePinDefaultValue(logCategoryPin, logCategoryName);
 
 		const auto settings = UELExtendedLogsSettings::Get();
 
