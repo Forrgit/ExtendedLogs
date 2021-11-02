@@ -9,6 +9,8 @@
 class UELLogManager;
 class FELOutputDeviceScreen;
 
+DECLARE_LOG_CATEGORY_EXTERN(LogExtendedLogs, Log, All);
+
 /**
 * The public interface to this module
 */

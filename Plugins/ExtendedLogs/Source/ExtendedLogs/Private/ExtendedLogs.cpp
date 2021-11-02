@@ -9,6 +9,8 @@
 
 IMPLEMENT_MODULE(FExtendedLogsModule, ExtendedLogs)
 
+DEFINE_LOG_CATEGORY(LogExtendedLogs);
+
 void FExtendedLogsModule::StartupModule()
 {
 	LogManager.Reset(NewObject<UELLogManager>());

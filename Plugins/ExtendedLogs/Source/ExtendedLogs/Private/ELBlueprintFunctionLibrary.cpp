@@ -14,32 +14,39 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	const auto settings = UELExtendedLogsSettings::Get();
 	const auto logManager = FExtendedLogsModule::GetLogManager();
 
-	if (logManager == nullptr
-	    || (LogCategoryName.IsValid() && logManager->IsSuppressedLogCategory(LogCategoryName.Name, nativeLogVerbosity))
-	    || (!settings->bAllowBPLogsOutputToEmptyOrInvalidCategories && logManager->FindLogCategory(LogCategoryName.Name).Num() == 0))
+	if (logManager == nullptr || (LogCategoryName.IsValid() && logManager->IsSuppressedLogCategory(LogCategoryName.Name, nativeLogVerbosity)))
 	{
 		return;
 	}
 
-	FString messageSuffix;
+	FString callstackDescription;
 
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 26) || ENGINE_MAJOR_VERSION > 4
 	const FBlueprintContextTracker* blueprintExceptionTracker = FBlueprintContextTracker::TryGet();
 	if (blueprintExceptionTracker != nullptr && blueprintExceptionTracker->GetScriptStack().Num() > 0)
 	{
 		const FFrame* lastFrame = blueprintExceptionTracker->GetScriptStack().Last();
-		messageSuffix = lastFrame->GetStackDescription();
+		callstackDescription = lastFrame->GetStackDescription();
 	}
 #endif
 
-	FMsg::Logf(nullptr, 0, LogCategoryName.Name, nativeLogVerbosity, TEXT("%s [%s]"), *Message, *messageSuffix);
+	if (!LogCategoryName.IsValid() && !settings->bAllowEmptyLogCategory)
+	{
+		UE_LOG(LogExtendedLogs, Warning, TEXT("Detect empty log category in Log function from %s"), *callstackDescription);
+	}
+	else if (LogCategoryName.IsValid() && !settings->bAllowInvalidLogCategory && logManager->FindLogCategory(LogCategoryName.Name).Num() == 0)
+	{
+		UE_LOG(LogExtendedLogs, Warning, TEXT("Detect invalid log category in Log function from %s"), *callstackDescription);
+	}
+
+	FMsg::Logf(nullptr, 0, LogCategoryName.Name, nativeLogVerbosity, TEXT("%s [%s]"), *Message, *callstackDescription);
 
 	if (bPrintToScreen)
 	{
 		const auto printToScreenLogData = settings->PrintLogsToScreenVerbosityMap.Find(LogVerbosity);
 		if (printToScreenLogData == nullptr || !printToScreenLogData->bPrintToScreen)
 		{
-			UKismetSystemLibrary::PrintString(WorldContextObject, FString::Printf(TEXT("%s [%s]"), *Message, *messageSuffix), true, false, ScreenTextColor, ScreenDuration);
+			UKismetSystemLibrary::PrintString(WorldContextObject, FString::Printf(TEXT("%s [%s]"), *Message, *callstackDescription), true, false, ScreenTextColor, ScreenDuration);
 		}
 	}
 }

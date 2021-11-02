@@ -73,7 +73,7 @@ public:
 	}
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Default log verbosity selector")
 	FELLogVerbositySelector LogVerbositySelector;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
@@ -83,13 +83,10 @@ public:
 	TMap<FName, EELLogVerbosity> DeclaredLogCategories;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
-	bool bAllowBPLogsOutputToEmptyOrInvalidCategories = true;
+	bool bAllowEmptyLogCategory = true;
 
 	UPROPERTY(EditAnywhere, Config, Category = "Logs")
-	bool bWarnIfLogCategoryIsEmpty = true;
-
-	UPROPERTY(EditAnywhere, Config, Category = "Logs")
-	bool bWarnIfLogCategoryInvalid = true;
+	bool bAllowInvalidLogCategory = true;
 
 	/*
 	* Only log categories matching the filter will be displayed in log category name widget(in details panel or node pin)

@@ -69,18 +69,18 @@ void UELK2Node_Log::ValidateNodeDuringCompilation(FCompilerResultsLog& MessageLo
 
 	const auto logCategoryPin = GetLogCategoryPin();
 
-	if (!logCategoryPin->HasAnyConnections() && UELExtendedLogsSettings::Get()->bWarnIfLogCategoryIsEmpty)
+	if (!logCategoryPin->HasAnyConnections())
 	{
 		FELLogCategoryName logCategoryName;
 		ELKismetUtilities::GetLogCategoryNamePinDefaultValue(logCategoryPin, logCategoryName);
 
 		const auto settings = UELExtendedLogsSettings::Get();
 
-		if (settings->bWarnIfLogCategoryIsEmpty && !logCategoryName.IsValid())
+		if (!settings->bAllowEmptyLogCategory && !logCategoryName.IsValid())
 		{
 			MessageLog.Warning(*FText::FromString(TEXT("Missing log category name for @@")).ToString(), this);
 		}
-		else if (settings->bWarnIfLogCategoryInvalid && FExtendedLogsModule::GetLogManager()->FindLogCategory(logCategoryName.Name).Num() == 0)
+		else if (!settings->bAllowInvalidLogCategory && FExtendedLogsModule::GetLogManager()->FindLogCategory(logCategoryName.Name).Num() == 0)
 		{
 			MessageLog.Warning(*FText::Format(NSLOCTEXT("KismetCompiler", "InvalidLogCategoryName_WarningFmt", "Log category name '{0}' invalid or no longer exist for @@"), FText::FromString(logCategoryName.Name.ToString())).ToString(), this);
 		}
