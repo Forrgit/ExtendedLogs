@@ -32,6 +32,11 @@ FText UELK2Node_Log::GetTooltipText() const
 	return LOCTEXT("Tooltip", "Outputs the log message into the log file and log widnow");
 }
 
+FLinearColor UELK2Node_Log::GetNodeTitleColor() const
+{
+	return FLinearColor(0.2f, 0.66f, 0.8f, 1.f);
+}
+
 void UELK2Node_Log::GetMenuActions(FBlueprintActionDatabaseRegistrar& ActionRegistrar) const
 {
 	auto customizeNodeLambda = [](UEdGraphNode* NewNode, bool bIsTemplateNode) {
