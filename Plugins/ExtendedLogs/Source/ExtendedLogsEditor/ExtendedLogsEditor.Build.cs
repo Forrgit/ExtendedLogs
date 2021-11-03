@@ -21,6 +21,7 @@ namespace UnrealBuildTool.Rules
 					"UnrealEd",
 					"EditorWidgets",
 					"PropertyEditor",
+					"DeveloperSettings",
 					
 					"ExtendedLogsDeveloper",
 					"ExtendedLogs"

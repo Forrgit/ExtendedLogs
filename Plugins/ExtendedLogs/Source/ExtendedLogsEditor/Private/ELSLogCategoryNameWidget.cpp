@@ -72,8 +72,9 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 
 	if (const auto logManager = FExtendedLogsModule::GetLogManager())
 	{
-		logManager->OnRegisterLogsEvent.AddSP(this, &SELLogCategoryNameWidget::OnPluginSettingsChanged);
+		logManager->OnRegisterLogsEvent.AddSP(this, &SELLogCategoryNameWidget::OnRegisterLogsEvent);
 	}
+	GetMutableDefault<UELExtendedLogsSettings>()->OnSettingChanged().AddSP(this, &SELLogCategoryNameWidget::OnPluginSettingsChanged);
 }
 
 SELLogCategoryNameWidget::FOnSelectionChangedDelegate& SELLogCategoryNameWidget::GetOnSelectionChanged()
@@ -149,7 +150,12 @@ void SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged(ECheckBoxState St
 	RefreshGlobalOptionSource();
 }
 
-void SELLogCategoryNameWidget::OnPluginSettingsChanged()
+void SELLogCategoryNameWidget::OnRegisterLogsEvent()
+{
+	RefreshGlobalOptionSource();
+}
+
+void SELLogCategoryNameWidget::OnPluginSettingsChanged(UObject*, FPropertyChangedEvent& PropertyChangedEvent)
 {
 	RefreshGlobalOptionSource();
 }

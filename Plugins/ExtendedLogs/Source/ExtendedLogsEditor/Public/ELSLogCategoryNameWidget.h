@@ -43,7 +43,8 @@ protected:
 
 	void OnCheckBoxUseFilterStateChanged(ECheckBoxState State);
 
-	void OnPluginSettingsChanged();
+	void OnRegisterLogsEvent();
+	void OnPluginSettingsChanged(class UObject*, struct FPropertyChangedEvent& PropertyChangedEvent);
 
 private:
 	FOnSelectionChangedDelegate OnSelectionChanged;

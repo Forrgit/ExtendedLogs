@@ -105,6 +105,8 @@ const TMultiMap<FName, FLogCategoryBase*>& UELLogManager::GetRawLogCategories() 
 
 void UELLogManager::RegisterLogs()
 {
+	DeclaredLogCategories.Empty();
+
 	for (auto& logCategory : UELExtendedLogsSettings::Get()->DeclaredLogCategories)
 	{
 		if (logCategory.Key != NAME_None)
