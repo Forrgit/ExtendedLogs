@@ -67,7 +67,7 @@ void FELLogVerbosityCustomization::OnLogCategoryChanged(const FString& Category)
 			if (rawData.Num() != 0)
 			{
 				EELLogVerbosity* logVerbosityPropertyValue = static_cast<EELLogVerbosity*>(rawData[0]);
-				*logVerbosityPropertyValue = ConvertLogCategory(logCategories[0]->GetVerbosity());
+				*logVerbosityPropertyValue = ConvertLogVerbosity(logCategories[0]->GetVerbosity());
 			}
 		}
 	}
@@ -103,7 +103,7 @@ void FELLogVerbosityCustomization::OnLogVerbosityChanged()
 			const auto logManager = FExtendedLogsModule::GetLogManager();
 			for (auto& logCategory : logManager->FindLogCategory(LogCategoryName))
 			{
-				logCategory->SetVerbosity(ConvertLogCategory(GetLogVerbosityPropertyValue()));
+				logCategory->SetVerbosity(ConvertLogVerbosity(GetLogVerbosityPropertyValue()));
 			}
 		}
 

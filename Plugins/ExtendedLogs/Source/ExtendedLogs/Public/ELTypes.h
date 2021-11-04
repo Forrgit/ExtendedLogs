@@ -76,12 +76,23 @@ static_assert(static_cast<uint8>(EELLogVerbosity::NoLogging) == static_cast<uint
 
 static_assert(static_cast<uint8>(EELLogVerbosity::VeryVerbose) == static_cast<uint8>(ELogVerbosity::VeryVerbose), "EELogVerbosity end log category must be equals with ELogVerbosity");
 
-inline ELogVerbosity::Type ConvertLogCategory(EELLogVerbosity LogVerbosity)
+inline EXTENDEDLOGS_API ELogVerbosity::Type ConvertLogVerbosity(EELLogVerbosity LogVerbosity)
 {
 	return static_cast<ELogVerbosity::Type>(LogVerbosity);
 }
 
-inline EELLogVerbosity ConvertLogCategory(ELogVerbosity::Type LogVerbosity)
+inline EXTENDEDLOGS_API EELLogVerbosity ConvertLogVerbosity(ELogVerbosity::Type LogVerbosity)
 {
 	return static_cast<EELLogVerbosity>(LogVerbosity);
+}
+
+inline EXTENDEDLOGS_API FString GetVerbosityString(EELLogVerbosity Verbosity)
+{
+	UEnum* enumClass = StaticEnum<EELLogVerbosity>();
+	check(enumClass != nullptr);
+	check(enumClass->GetCppForm() == UEnum::ECppForm::EnumClass);
+
+	FString enumValueString = enumClass->GetNameStringByValue(static_cast<int32>(Verbosity));
+	enumValueString.RemoveFromStart(enumClass->CppType + TEXT("::"));
+	return enumValueString;
 }

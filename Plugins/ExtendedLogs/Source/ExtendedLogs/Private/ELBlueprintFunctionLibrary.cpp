@@ -9,9 +9,29 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Runtime/Launch/Resources/Version.h"
 
-void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+FString ELLogHelpers::GetFormattedScreenLog(const FString& Message, FName LogCategoryName, EELLogVerbosity LogVerbosity)
 {
-	const auto nativeLogVerbosity = ConvertLogCategory(LogVerbosity);
+	FString messagePrefix = FString::Printf(TEXT("%s: "), *LogCategoryName.ToString());
+	if (LogVerbosity != EELLogVerbosity::Log)
+	{
+		messagePrefix += FString::Printf(TEXT("%s: "), *GetVerbosityString(LogVerbosity));
+	}
+	return messagePrefix + Message;
+}
+
+FString ELLogHelpers::GetObjectName(const UObject* Object)
+{
+	return *GetNameSafe(Object);
+}
+
+FString ELLogHelpers::GetObjectName(const UActorComponent* Component)
+{
+	return Component != nullptr ? Component->GetReadableName() : FString();
+}
+
+void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+{
+	const auto nativeLogVerbosity = ConvertLogVerbosity(LogVerbosity);
 
 	const auto settings = UELExtendedLogsSettings::Get();
 	const auto logManager = FExtendedLogsModule::GetLogManager();
@@ -22,6 +42,7 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	}
 
 	FString callstackDescription;
+	FString formattedCallerObjectName;
 
 #if DO_BLUEPRINT_GUARD
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 26) || ENGINE_MAJOR_VERSION > 4
@@ -30,6 +51,11 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	{
 		const FFrame* lastFrame = blueprintExceptionTracker->GetScriptStack().Last();
 		callstackDescription = lastFrame->GetStackDescription();
+
+		if (bShowCallerName)
+		{
+			formattedCallerObjectName = FString::Printf(TEXT("[%s] "), *ELLogHelpers ::GetObjectName(lastFrame->Object));
+		}
 	}
 #endif
 
@@ -44,22 +70,22 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 		UE_LOG(LogExtendedLogs, Warning, TEXT("Detect invalid log category in Log function from %s"), *callstackDescription);
 	}
 
-	FMsg::Logf(nullptr, 0, LogCategoryName.Name, nativeLogVerbosity, TEXT("%s [%s]"), *Message, *callstackDescription);
+	FMsg::Logf(nullptr, 0, LogCategoryName.Name, nativeLogVerbosity, TEXT("%s%s (%s)"), *formattedCallerObjectName, *Message, *callstackDescription);
 
 	if (bPrintToScreen)
 	{
 		const auto printToScreenLogData = settings->PrintLogsToScreenVerbosityMap.Find(LogVerbosity);
 		if (printToScreenLogData == nullptr || !printToScreenLogData->bPrintToScreen)
 		{
-			UKismetSystemLibrary::PrintString(WorldContextObject, FString::Printf(TEXT("%s [%s]"), *Message, *callstackDescription), true, false, ScreenTextColor, ScreenDuration);
+			UKismetSystemLibrary::PrintString(WorldContextObject, FString::Printf(TEXT("%s%s (%s)"), *formattedCallerObjectName, *ELLogHelpers::GetFormattedScreenLog(Message, LogCategoryName.Name, LogVerbosity), *callstackDescription), true, false, ScreenTextColor, ScreenDuration);
 		}
 	}
 }
 
-void UELBlueprintFunctionLibrary::ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+void UELBlueprintFunctionLibrary::ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
 {
 	if (bCondition)
 	{
-		UELBlueprintFunctionLibrary::Log(Message, LogCategoryName, LogVerbosity, WorldContextObject, bPrintToScreen, ScreenTextColor, ScreenDuration);
+		UELBlueprintFunctionLibrary::Log(Message, LogCategoryName, LogVerbosity, bShowCallerName, WorldContextObject, bPrintToScreen, ScreenTextColor, ScreenDuration);
 	}
 }

@@ -111,7 +111,7 @@ void UELLogManager::RegisterLogs()
 	{
 		if (logCategory.Key != NAME_None)
 		{
-			DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.Key, ConvertLogCategory(logCategory.Value), ELogVerbosity::All)));
+			DeclaredLogCategories.Add(MakeShareable(new FLogCategoryBase(logCategory.Key, ConvertLogVerbosity(logCategory.Value), ELogVerbosity::All)));
 		}
 	}
 

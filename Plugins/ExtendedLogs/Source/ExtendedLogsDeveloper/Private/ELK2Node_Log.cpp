@@ -84,7 +84,7 @@ void UELK2Node_Log::ValidateNodeDuringCompilation(FCompilerResultsLog& MessageLo
 		}
 		else if (!settings->bAllowInvalidLogCategory && FExtendedLogsModule::GetLogManager()->FindLogCategory(logCategoryName.Name).Num() == 0)
 		{
-			MessageLog.Warning(*FText::Format(NSLOCTEXT("KismetCompiler", "InvalidLogCategoryName_WarningFmt", "Log category name '{0}' invalid or no longer exist for @@"), FText::FromString(logCategoryName.Name.ToString())).ToString(), this);
+			MessageLog.Warning(*FText::Format(NSLOCTEXT("KismetCompiler", "InvalidLogCategoryName_WarningFmt", "Log category '{0}' not found, it category might have been removed,  @@"), FText::FromString(logCategoryName.Name.ToString())).ToString(), this);
 		}
 	}
 }
