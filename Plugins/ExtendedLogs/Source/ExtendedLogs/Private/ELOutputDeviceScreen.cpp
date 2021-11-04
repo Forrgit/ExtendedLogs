@@ -40,6 +40,11 @@ void FELOutputDeviceScreen::Serialize(const TCHAR* V, ELogVerbosity::Type Verbos
 	}
 #endif
 
+	if (IsEngineExitRequested())
+	{
+		return;
+	}
+
 	const auto settings = Cast<UELExtendedLogsSettings>(UELExtendedLogsSettings::StaticClass()->GetDefaultObject(false));
 	if (settings != nullptr && settings->bPrintLogsToScreen)
 	{
