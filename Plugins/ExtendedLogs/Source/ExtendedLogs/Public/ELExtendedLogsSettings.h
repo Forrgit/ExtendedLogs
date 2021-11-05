@@ -17,13 +17,13 @@ public:
 	FELPrintToScreenLogData(bool bInPrintToScreen, float InScreenTime, FColor InScreenColor);
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Settings")
 	bool bPrintToScreen = true;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Settings")
 	float ScreenTime = 10.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Settings")
 	FColor ScreenColor = FColor(127, 127, 127);
 };
 
@@ -38,13 +38,13 @@ public:
 	/*
 	*A String filter(search by substring) to check for a matching
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Settings")
 	FString Filter;
 
 	/*
 	 *If true, it replaces string filter(search by substring) to regular expression
 	 */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Settings")
 	bool bUseFilterAsRegularExpression = false;
 };
 
@@ -53,7 +53,7 @@ struct EXTENDEDLOGS_API FELLogVerbositySelector
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Settings")
 	EELLogVerbosity LogVerbosity = EELLogVerbosity::Log;
 };
 

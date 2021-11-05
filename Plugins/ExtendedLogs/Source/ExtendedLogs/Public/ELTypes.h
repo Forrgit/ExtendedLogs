@@ -24,7 +24,7 @@ public:
 	}
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
 	FName Name;
 };
 
