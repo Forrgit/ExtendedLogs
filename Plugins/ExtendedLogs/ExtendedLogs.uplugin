@@ -1,14 +1,14 @@
 {
 	"FileVersion" : 3,
 	    "Version" : 5,
-	    "VersionName" : "1.0"
+	    "VersionName" : "1.0.0"
 	    , "FriendlyName" : "Extended Logs"
-	    , "Description" : ""
+	    , "Description" : "Full access to logs from blueprints"
 	    , "Category" : "Code Plugin"
 	    , "CreatedBy" : "Alexander Shumeyko"
 	    , "CreatedByURL" : "https://www.linkedin.com/in/forrgit/"
-	    , "DocsURL" : ""
-	    , "MarketplaceURL" : ""
+	    , "DocsURL" : "https://forrgit.gitbook.io/extended-logs/"
+	    , "MarketplaceURL" : "com.epicgames.launcher://ue/marketplace/content/c5d9486117f14739ac68975ebab0aa76"
 	    , "SupportURL" : "https://t.me/Forrgit"
 	    , "EngineVersion" : "4.26.0"
 	    , "EnabledByDefault" : true
