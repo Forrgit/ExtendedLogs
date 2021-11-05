@@ -8,6 +8,8 @@
 
 #include "ELBlueprintFunctionLibrary.generated.h"
 
+class UActorComponent;
+
 namespace ELLogHelpers
 {
 FString GetFormattedScreenLog(const FString& Message, FName LogCategoryName, EELLogVerbosity LogVerbosity);

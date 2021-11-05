@@ -5,6 +5,7 @@
 #include "ELExtendedLogsSettings.h"
 #include "ELLogManager.h"
 
+#include "Components/ActorComponent.h"
 #include "ExtendedLogs.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Runtime/Launch/Resources/Version.h"
