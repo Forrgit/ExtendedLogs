@@ -30,7 +30,7 @@ FString ELLogHelpers::GetObjectName(const UActorComponent* Component)
 	return Component != nullptr ? Component->GetReadableName() : FString();
 }
 
-void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
 {
 	const auto nativeLogVerbosity = ConvertLogVerbosity(LogVerbosity);
 
@@ -83,7 +83,7 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	}
 }
 
-void UELBlueprintFunctionLibrary::ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+void UELBlueprintFunctionLibrary::ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
 {
 	if (bCondition)
 	{

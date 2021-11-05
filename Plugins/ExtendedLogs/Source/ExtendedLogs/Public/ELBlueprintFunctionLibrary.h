@@ -34,7 +34,7 @@ public:
 	 * @param ScreenDuration	The display duration (if Print to Screen is True). Using negative number will result in loading the duration time from the config.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Extended Logs", meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", CallableWithoutWorldContext, Keywords = "log print", AdvancedDisplay = "4"))
-	static void Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity = EELLogVerbosity::Log, bool bShowCallerName = true, const UObject* WorldContextObject = nullptr, bool bPrintToScreen = false, FLinearColor ScreenTextColor = FLinearColor(0.0, 0.66, 1.0), float ScreenDuration = 2.f);
+	static void Log(const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity = EELLogVerbosity::Log, bool bShowCallerName = true, UObject* WorldContextObject = nullptr, bool bPrintToScreen = false, FLinearColor ScreenTextColor = FLinearColor(0.0, 0.66, 1.0), float ScreenDuration = 2.f);
 
 	/**
 	 * Outputs the log message into the log file and output log window.
@@ -48,5 +48,5 @@ public:
 	 * @param ScreenDuration	The display duration (if Print to Screen is True). Using negative number will result in loading the duration time from the config.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Extended Logs", meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", CallableWithoutWorldContext, Keywords = "log print", AdvancedDisplay = "5"))
-	static void ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity = EELLogVerbosity::Log, bool bShowCallerName = true, const UObject* WorldContextObject = nullptr, bool bPrintToScreen = false, FLinearColor ScreenTextColor = FLinearColor(0.0, 0.66, 1.0), float ScreenDuration = 2.f);
+	static void ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity = EELLogVerbosity::Log, bool bShowCallerName = true, UObject* WorldContextObject = nullptr, bool bPrintToScreen = false, FLinearColor ScreenTextColor = FLinearColor(0.0, 0.66, 1.0), float ScreenDuration = 2.f);
 };

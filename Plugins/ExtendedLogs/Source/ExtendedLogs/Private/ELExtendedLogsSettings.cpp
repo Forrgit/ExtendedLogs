@@ -36,6 +36,8 @@ void UELExtendedLogsSettings::PostEditChangeProperty(FPropertyChangedEvent& Prop
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
+	SettingsChangedDelegate.Broadcast(this, PropertyChangedEvent);
+	
 	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(UELExtendedLogsSettings, DeclaredLogCategories))
 	{
 		if (PropertyChangedEvent.ChangeType == EPropertyChangeType::ArrayAdd)

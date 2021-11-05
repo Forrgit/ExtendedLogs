@@ -67,6 +67,11 @@ public:
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual FText GetSectionText() const override;
+	
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnSettingsChanged, UObject*, struct FPropertyChangedEvent&);
+	FOnSettingsChanged& OnSettingChanged() { return SettingsChangedDelegate; }
+	FOnSettingsChanged SettingsChangedDelegate;
+
 #endif //WITH_EDITOR
 
 	static const UELExtendedLogsSettings* Get()
