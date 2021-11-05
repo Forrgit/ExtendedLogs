@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.26",
+	"EngineAssociation": "4.27",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -13,7 +13,8 @@
 	"Plugins": [
 		{
 			"Name": "ExtendedLogs",
-			"Enabled": true
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/c5d9486117f14739ac68975ebab0aa76"
 		}
 	],
 	"TargetPlatforms": [
