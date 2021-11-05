@@ -26,12 +26,7 @@ void UELK2Node_Log::AllocateDefaultPins()
 
 FText UELK2Node_Log::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return FText::FromString(NativeFunctionName.ToString()); // LOCTEXT("Title", NativeFunctionName);
-}
-
-FText UELK2Node_Log::GetTooltipText() const
-{
-	return LOCTEXT("Tooltip", "Outputs the log message into the log file and log widnow");
+	return FText::FromString(NativeFunctionName.ToString());
 }
 
 FLinearColor UELK2Node_Log::GetNodeTitleColor() const
