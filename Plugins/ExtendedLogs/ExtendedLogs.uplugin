@@ -10,7 +10,7 @@
 	    , "DocsURL" : "https://forrgit.gitbook.io/extended-logs/"
 	    , "MarketplaceURL" : "com.epicgames.launcher://ue/marketplace/content/c5d9486117f14739ac68975ebab0aa76"
 	    , "SupportURL" : "https://t.me/Forrgit"
-	    , "EngineVersion" : "4.27.0"
+	    , "EngineVersion" : "4.26.0"
 	    , "EnabledByDefault" : true
 	    , "CanContainContent" : false
 	    , "IsBetaVersion" : false
