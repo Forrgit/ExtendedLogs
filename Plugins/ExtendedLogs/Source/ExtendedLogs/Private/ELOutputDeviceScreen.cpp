@@ -33,17 +33,17 @@ FELOutputDeviceScreen::~FELOutputDeviceScreen()
 
 void FELOutputDeviceScreen::Serialize(const TCHAR* V, ELogVerbosity::Type Verbosity, const FName& Category)
 {
+	if (GEngine == nullptr || IsEngineExitRequested())
+	{
+		return;
+	}
+	
 #if WITH_EDITOR
 	if (GEditor != nullptr && !GEditor->IsPlayingSessionInEditor())
 	{
 		return;
 	}
 #endif
-
-	if (IsEngineExitRequested())
-	{
-		return;
-	}
 
 	const auto settings = Cast<UELExtendedLogsSettings>(UELExtendedLogsSettings::StaticClass()->GetDefaultObject(false));
 	if (settings != nullptr && settings->bPrintLogsToScreen)
