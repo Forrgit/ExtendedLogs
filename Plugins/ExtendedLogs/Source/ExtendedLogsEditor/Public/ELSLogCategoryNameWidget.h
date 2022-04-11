@@ -65,6 +65,8 @@ private:
 
 	FText GetCurrentSelection() const;
 
+	FText GetTooltipText() const;
+
 	void OnCheckBoxUseFilterStateChanged(ECheckBoxState State);
 
 	void OnRegisterLogsEvent();

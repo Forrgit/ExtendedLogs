@@ -79,10 +79,9 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 	// clang-format off
 	
 	// Set up content
-	TSharedPtr<SWidget> buttonContent = SNew(STextBlock)
-											.Text(this, &SELLogCategoryNameWidget::GetCurrentSelection);
-	                                        //.Text(NSLOCTEXT("SSearchableComboBox", "ContentWarning", "No Content Provided"))
-	                                        //.ColorAndOpacity(FLinearColor::Red);
+	TSharedPtr<SWidget> buttonContent =
+			SNew(STextBlock)
+			.Text(this, &SELLogCategoryNameWidget::GetCurrentSelection);
 	// clang-format on
 
 	// clang-format off
@@ -100,10 +99,12 @@ void SELLogCategoryNameWidget::Construct(const FArguments& InArgs)
 	            comboBoxMenuContent
 	        ]
 	        //.HasDownArrow(InArgs._HasDownArrow)
+	        .ComboButtonStyle(FAppStyle::Get(), "SimpleComboButton")
+			.ForegroundColor(FSlateColor::UseStyle())
 	        .ContentPadding(FMargin(4.0, 2.0))
-	        .ForegroundColor(FCoreStyle::Get().GetSlateColor("InvertedForeground"))
 	        .OnMenuOpenChanged(this, &SELLogCategoryNameWidget::OnMenuOpenChanged)
 	        .IsFocusable(true)
+	        .ToolTipText(this, &SELLogCategoryNameWidget::GetTooltipText)
 	        );
 
 	// clang-format on
@@ -291,6 +292,11 @@ FText SELLogCategoryNameWidget::GetCurrentSelection() const
 {
 	const auto selectedItem = const_cast<SELLogCategoryNameWidget*>(this)->GetSelectedItem();
 	return FText::FromString(selectedItem.IsValid() ? *selectedItem : FString());
+}
+
+FText SELLogCategoryNameWidget::GetTooltipText() const
+{
+	return SelectedItem.IsValid() ? FText::FromString(*SelectedItem.Get()) : FText();
 }
 
 void SELLogCategoryNameWidget::OnCheckBoxUseFilterStateChanged(ECheckBoxState State)

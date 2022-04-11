@@ -32,6 +32,7 @@ void FELLogCategoryNameCustomization::CustomizeHeader(TSharedRef<IPropertyHandle
 		PropertyHandle->CreatePropertyNameWidget()
 	]
 	.ValueContent()
+	.HAlign(HAlign_Fill)
 	[
 		SAssignNew(LogCategoryWidget, SELLogCategoryNameWidget)
 		.InitialItem(nameValue)
