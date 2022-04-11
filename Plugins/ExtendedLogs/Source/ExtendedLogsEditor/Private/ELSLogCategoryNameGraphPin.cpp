@@ -18,7 +18,7 @@ TSharedRef<SWidget> SELLogCategoryNameGraphPin::GetDefaultValueWidget()
 	// clang-format off
 
 	return SNew(SBox)
-			.WidthOverride(170)
+			.WidthOverride(190)
 			.Visibility( this, &SGraphPin::GetDefaultValueVisibility )
 			[
 				SNew(SELLogCategoryNameWidget)

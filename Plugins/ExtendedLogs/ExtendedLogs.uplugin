@@ -1,7 +1,7 @@
 {
 	"FileVersion" : 3,
 	    "Version" : 5,
-	    "VersionName" : "1.0.1"
+	    "VersionName" : "1.1.0"
 	    , "FriendlyName" : "Extended Logs"
 	    , "Description" : "Full access to logs from blueprints"
 	    , "Category" : "Code Plugin"
@@ -9,8 +9,8 @@
 	    , "CreatedByURL" : "https://www.linkedin.com/in/forrgit/"
 	    , "DocsURL" : "https://forrgit.gitbook.io/extended-logs/"
 	    , "MarketplaceURL" : "com.epicgames.launcher://ue/marketplace/content/c5d9486117f14739ac68975ebab0aa76"
-	    , "SupportURL" : "https://t.me/Forrgit"
-	    , "EngineVersion" : "4.27.0"
+	    , "SupportURL" : "https://discord.com/invite/vMCTHFz"
+	    , "EngineVersion" : "5.0.0"
 	    , "EnabledByDefault" : true
 	    , "CanContainContent" : false
 	    , "IsBetaVersion" : false
@@ -22,18 +22,14 @@
 			    "Type" : "Runtime",
 			    "LoadingPhase" : "Default",
 			    "WhitelistPlatforms" : [
-				    "Android",
-				    "HTML5",
-				    "IOS",
-				    "Linux",
-				    "Lumin",
-				    "Mac",
-				    "PS4",
-				    "Switch",
-				    "TVOS",
-				    "Win32",
 				    "Win64",
-				    "XboxOne"
+					"Linux",
+					"LinuxArm64",
+					"Mac",
+					"IOS",
+					"Android",
+					"TVOS",
+					"Hololens"
 			    ]
 		    },
 		    {
@@ -42,8 +38,8 @@
 			    "LoadingPhase" : "Default",
 			    "WhitelistPlatforms" : [
 				    "Win64",
-				    "Win32",
 				    "Linux",
+				    "LinuxArm64",
 				    "Mac"
 			    ]
 		    },
@@ -52,18 +48,14 @@
 			    "Type" : "UncookedOnly",
 			    "LoadingPhase" : "Default",
 			    "WhitelistPlatforms" : [
-				    "Android",
-				    "HTML5",
-				    "IOS",
-				    "Linux",
-				    "Lumin",
-				    "Mac",
-				    "PS4",
-				    "Switch",
-				    "TVOS",
-				    "Win32",
-				    "Win64",
-				    "XboxOne"
+				   	"Win64",
+					"Linux",
+					"LinuxArm64",
+					"Mac",
+					"IOS",
+					"Android",
+					"TVOS",
+					"Hololens"
 			    ]
 		    }
 	    ]
