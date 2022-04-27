@@ -9,6 +9,7 @@
 #include "ExtendedLogs.h"
 #include "Framework/Application/SlateUser.h"
 #include "Internationalization/Regex.h"
+#include "Styling/AppStyle.h"
 
 #define LOCTEXT_NAMESPACE "SELLogCategoryNameWidget"
 
