@@ -47,7 +47,9 @@ void UELK2Node_Log::GetMenuActions(FBlueprintActionDatabaseRegistrar& ActionRegi
 	{
 		TArray<FName> nativeFunctionNames;
 		nativeFunctionNames.Add(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, Log));
+		nativeFunctionNames.Add(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, LogText));
 		nativeFunctionNames.Add(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, ConditionalLog));
+		nativeFunctionNames.Add(GET_FUNCTION_NAME_CHECKED(UELBlueprintFunctionLibrary, ConditionalLogText));
 
 		for (auto& nativeFunctionName : nativeFunctionNames)
 		{

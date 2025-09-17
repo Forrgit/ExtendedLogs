@@ -48,10 +48,12 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 #if DO_BLUEPRINT_GUARD
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 26) || ENGINE_MAJOR_VERSION > 4
 	const FBlueprintContextTracker* blueprintExceptionTracker = FBlueprintContextTracker::TryGet();
-	if (blueprintExceptionTracker != nullptr && blueprintExceptionTracker->GetScriptStack().Num() > 0)
+	if (blueprintExceptionTracker != nullptr && blueprintExceptionTracker->GetCurrentScriptStack().Num() > 0)
 	{
-		const FFrame* lastFrame = blueprintExceptionTracker->GetScriptStack().Last();
-		callstackDescription = lastFrame->GetStackDescription();
+		const FFrame* lastFrame = blueprintExceptionTracker->GetCurrentScriptStack().Last();
+		FStringBuilderBase callstackDescriptionStringBuilder;
+		lastFrame->GetStackDescription(callstackDescriptionStringBuilder);
+		callstackDescription = callstackDescriptionStringBuilder;
 
 		if (bShowCallerName)
 		{
@@ -83,10 +85,23 @@ void UELBlueprintFunctionLibrary::Log(const FString& Message, FELLogCategoryName
 	}
 }
 
+void UELBlueprintFunctionLibrary::LogText(const FText& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+{
+	Log(Message.ToString(), LogCategoryName, LogVerbosity, bShowCallerName, WorldContextObject, bPrintToScreen, ScreenTextColor, ScreenDuration);
+}
+
 void UELBlueprintFunctionLibrary::ConditionalLog(bool bCondition, const FString& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
 {
 	if (bCondition)
 	{
 		UELBlueprintFunctionLibrary::Log(Message, LogCategoryName, LogVerbosity, bShowCallerName, WorldContextObject, bPrintToScreen, ScreenTextColor, ScreenDuration);
+	}
+}
+
+void UELBlueprintFunctionLibrary::ConditionalLogText(bool bCondition, const FText& Message, FELLogCategoryName LogCategoryName, EELLogVerbosity LogVerbosity, bool bShowCallerName, const UObject* WorldContextObject, bool bPrintToScreen, FLinearColor ScreenTextColor, float ScreenDuration)
+{
+	if (bCondition)
+	{
+		UELBlueprintFunctionLibrary::Log(Message.ToString(), LogCategoryName, LogVerbosity, bShowCallerName, WorldContextObject, bPrintToScreen, ScreenTextColor, ScreenDuration);
 	}
 }
